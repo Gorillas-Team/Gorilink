@@ -114,7 +114,7 @@ module.exports = class GorilinkPlayer extends EventEmitter {
             op: 4,
             d: {
               guild_id: message.guildId,
-              channel_id: this.voiceChannel.id || player.voiceChannel,
+              channel_id: this.voiceChannel.id || this.voiceChannel,
               self_mute: this.options.selfMute || false,
               self_deaf: this.options.selfDeaf || false,
             },

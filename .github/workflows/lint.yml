@@ -1,0 +1,16 @@
+name: ESLint
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    name: Run eslint
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install packages
+      - run: yarn install
+      - name: ESLint
+      - run: yarn lint

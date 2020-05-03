@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "lint:fix": "eslint --fix src/ examples/",
-    "linst": "eslint src/ examples/"
+    "lint": "eslint src/ examples/"
   },
   "engines": {
     "node": ">=10",

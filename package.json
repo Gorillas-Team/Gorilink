@@ -22,8 +22,7 @@
     "discord.js": "^12.2.0",
     "eslint": "^6.8.0",
     "jsdoc": "^3.6.4",
-    "nodemon": "^2.0.3",
-    "standard": "^14.3.3"
+    "nodemon": "^2.0.3"
   },
   "dependencies": {
     "node-fetch": "^2.6.0",

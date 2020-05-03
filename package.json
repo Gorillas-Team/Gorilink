@@ -4,7 +4,8 @@
   "main": "src/index.js",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint --fix ."
+    "lint:fix": "eslint --fix src/ examples/",
+    "linst": "eslint src/ examples/"
   },
   "engines": {
     "node": ">=10",

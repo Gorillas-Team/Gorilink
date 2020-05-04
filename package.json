@@ -1,6 +1,6 @@
 {
   "name": "gorilink",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "src/index.js",
   "license": "MIT",
   "scripts": {
@@ -33,6 +33,13 @@
   "directories": {
     "example": "examples"
   },
-  "keywords": ["lavalink", "discord.js", "discord music bot", "discord music", "lavalink client", "discord bot"],
+  "keywords": [
+    "lavalink",
+    "discord.js",
+    "discord music bot",
+    "discord music",
+    "lavalink client",
+    "discord bot"
+  ],
   "author": "Gorillas team"
 }

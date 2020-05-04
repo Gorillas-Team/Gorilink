@@ -5,7 +5,7 @@ const Prop = require('./structures/NodeStorage')
 
 const fetch = require('node-fetch')
 
-module.exports = class GorilalinkManager extends EventEmitter {
+module.exports = class GorilinkManager extends EventEmitter {
   constructor(client, nodes, options = {}) {
     super()
 

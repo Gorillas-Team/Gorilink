@@ -20,7 +20,7 @@ client.on('ready', async () => {
       console.log(`${node.tag || node.host} - Lavalink connected with success.`)
     })
     .on('trackStart', event => {
-      event.player.textChannel.send(`Now playing \`${res.track.info.title}\``)
+      event.player.textChannel.send(`Now playing \`${event.track.info.title}\``)
     })
 
   console.log('Online on the client', client.user.username)

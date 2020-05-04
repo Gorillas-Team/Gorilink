@@ -79,6 +79,10 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     return this.send('voiceUpdate', data)
   }
 
+  destroy() {
+    return this.send('destroy')
+  }
+
   getEvent(data) {
     const events = {
       'TrackStartEvent': function () {

@@ -16,8 +16,11 @@ const client = new Client()
 
 client.on('ready', async () => {
   client.music = new GorilinkManager(client, config.nodes)
-    .on('nodeConnect', (node) => {
-      console.log('Lavalink connected with success.')
+    .on('nodeConnect', node => {
+      console.log(`${node.tag || node.host} - Lavalink connected with success.`)
+    })
+    .on('trackStart', event => {
+      event.player.textChannel.send(`Now playing \`${res.track.info.title}\``)
     })
 
   console.log('Online on the client', client.user.username)

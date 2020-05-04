@@ -47,7 +47,7 @@ module.exports = class GorilalinkManager extends EventEmitter {
       op: 4,
       d: {
         guild_id: data.guild,
-        channel_id: data.voiceChannel,
+        channel_id: data.voiceChannel.id || data.voiceChannel,
         self_mute: data.selfMute || false,
         self_deaf: data.selfDeaf || false
       }

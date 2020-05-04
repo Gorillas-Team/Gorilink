@@ -10,6 +10,10 @@ jobs:
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '13.x'
       - name: Install packages
         run: yarn install
       - name: ESLint

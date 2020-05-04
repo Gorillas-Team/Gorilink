@@ -1,6 +1,6 @@
 {
   "name": "gorilink",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "src/index.js",
   "license": "MIT",
   "scripts": {
@@ -28,5 +28,11 @@
   "dependencies": {
     "node-fetch": "^2.6.0",
     "ws": "^7.2.5"
-  }
+  },
+  "description": "Easy lavalink wrapper for Discord.js. (soon eris)",
+  "directories": {
+    "example": "examples"
+  },
+  "keywords": ["lavalink", "discord.js", "discord music bot", "discord music", "lavalink client", "discord bot"],
+  "author": "Gorillas team"
 }

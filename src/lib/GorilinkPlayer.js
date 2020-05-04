@@ -25,7 +25,7 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     this.queue = new Queue()
 
     this.on('event', data => {
-      (this.getEvent(data.type).bind(this))()
+      (this.getEvent(data).bind(this))()
     }).on('playerUpdate', packet => {
       this.state = { volume: this.state.volume, equalizer: this.state.equalizer, ...packet.state }
     })
@@ -79,53 +79,53 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     return this.send('voiceUpdate', data)
   }
 
-  getEvent(type) {
+  getEvent(data) {
     const events = {
       'TrackStartEvent': function () {
-        this.manager.emit('trackStart', this, this.track)
+        this.manager.emit('trackStart', { player: this, track: this.track })
       },
       'TrackEndEvent': function () {
         if (this.track && this.looped) {
-          this.manager.emit('trackEnd', this, this.track)
+          this.manager.emit('trackEnd', { player: this, track: this.track })
           return this.play()
         } else if (this.queue.length <= 1) {
           this.queue.shift()
           this.playing = false
-          if (['REPLACED', 'FINISHED', 'STOPPED'].includes(type.reason)) {
-            this.manager.emit('queueEnd', this)
+          if (['REPLACED', 'FINISHED', 'STOPPED'].includes(data.reason)) {
+            this.manager.emit('queueEnd', { player: this })
           }
         } else if (this.queue.length > 0) {
           this.queue.shift()
-          this.manager.emit('trackEnd', this, this.track)
+          this.manager.emit('trackEnd', { player: this, track: this.track })
           return this.play()
         }
       },
       'TrackStuckEvent': function () {
         this.queue.shift()
-        this.manager.emit('trackStuck', this, track, type)
+        this.manager.emit('trackStuck', { player: this, track: this.track, data })
       },
       'TrackExceptionEvent': function () {
         this.queue.shift()
-        this.manager.emit('trackError', this, track, type)
+        this.manager.emit('trackError', { player: this, tracK: this.track, data })
       },
       'WebSocketClosedEvent': function () {
-        if ([4015, 4009].includes(message.code)) {
+        if ([4015, 4009].includes(data.code)) {
           this.manager.sendWS({
             op: 4,
             d: {
-              guild_id: message.guildId,
+              guild_id: data.guildId,
               channel_id: this.voiceChannel.id || this.voiceChannel,
               self_mute: this.options.selfMute || false,
               self_deaf: this.options.selfDeaf || false,
             },
           })
         }
-        this.manager.emit('socketClosed', this, message)
+        this.manager.emit('socketClosed', { player: this, data })
       },
-      'default': function () { throw new Error(`Unknown event '${message.type}'.`) }
+      'default': function () { throw new Error(`Unknown event '${data}'.`) }
     }
 
-    return events[type] || events['default']
+    return events[data.type] || events['default']
   }
 
   send(op, data) {

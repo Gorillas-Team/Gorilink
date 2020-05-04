@@ -3,6 +3,7 @@ const WebSocket = require('ws')
 module.exports = class LavalinkNode {
   constructor(manager, options = {}) {
     this.manager = manager
+    this.tag = options.tag || null
     this.host = options.host
     this.port = options.port || 2333
     this.password = options.password || 'youshallnotpass'
@@ -70,7 +71,7 @@ module.exports = class LavalinkNode {
   }
 
   onClose(event) {
-    this.manager.emit('nodeClose', event, this)
+    this.manager.emit('nodeClose', { event, node: this })
 
     if (event.code != null || event.reason != 'destroy') return this.reconnect()
   }

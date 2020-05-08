@@ -15,6 +15,7 @@ module.exports = class LavalinkNode {
       players: 0,
       playingPlayers: 0,
       uptime: 0,
+      ping: -1,
       memory: {
         free: 0,
         used: 0,
@@ -51,6 +52,8 @@ module.exports = class LavalinkNode {
   onOpen() {
     if (this._reconnect) clearTimeout(this._reconnect)
 
+    this.heartbeat(60000)
+
     this.manager.emit('nodeConnect', this)
     this.connected = true
   }
@@ -61,13 +64,19 @@ module.exports = class LavalinkNode {
 
     const packet = JSON.parse(data)
 
-    if (packet.op && packet.op == 'stats') this.stats = { ...packet }
-    delete this.stats.op
+    if (packet.op && packet.op == 'stats'){
+      this.stats = { ...packet, ping: this.stats.ping }
+      delete this.stats.op
+
+      this.sendHeartbeat()
+    }
 
     const player = this.manager.players.get(packet.guildId)
     if (packet.guildId && player) player.emit(packet.op, packet)
 
-    this.manager.emit('raw', { node: this, packet })
+    packet.node = this
+
+    this.manager.emit('raw', packet)
   }
 
   onClose(event) {
@@ -84,6 +93,22 @@ module.exports = class LavalinkNode {
     this.manager.emit('nodeError', { node: this, err })
 
     return this.reconnect()
+  }
+
+  sendHeartbeat() {
+    return this.stats.ping = Date.now() - this._lastPingTimestamp
+  }
+
+  heartbeat(time) {
+    if(!isNaN(time)){
+      if(time === -1){
+        clearInterval(this._heartbeatInterval)
+        this._heartbeatInterval = null
+      } else {
+        this._heartbeatInterval = setInterval(() => this.heartbeat(), time)
+      }
+    }
+    this._lastPingTimestamp = Date.now()
   }
 
   reconnect() {

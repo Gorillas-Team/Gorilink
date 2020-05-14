@@ -91,6 +91,6 @@ client.login('your-token')
 ```
 
 ## Authors
-  - Psykka
-  - zMigueel
-  - DerpyXD
+  - [Psykka](https://github.com/Psykka)
+  - [zMigueel](https://github.com/zMigueel)
+  - [DerpyXD](https://github.com/DerpyXD)

@@ -70,7 +70,7 @@ module.exports = class GorilinkManager extends EventEmitter {
     if (!player) throw false
 
     player.removeAllListeners()
-    player.destroy()
+    player.send('destroy')
 
     return this.players.delete(guild)
   }

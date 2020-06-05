@@ -70,10 +70,12 @@ module.exports = class GorilinkPlayer extends EventEmitter {
   }
 
   loopSingle(bool){
+    if(this.loopedAll) this.loopedAll = false
     return this.loopedSingle = bool
   }
 
   loopAll(bool) {
+    if(this.loopedSingle) this.loopedSingle = false
     return this.loopedAll = bool
   }
 
@@ -89,8 +91,7 @@ module.exports = class GorilinkPlayer extends EventEmitter {
   }
 
   destroy() {
-    this.manager.leave(this.guild.id || this.guild)
-    return this.send('destroy')
+    return this.manager.leave(this.guild.id || this.guild)
   }
 
   getEvent(data) {

@@ -105,7 +105,7 @@ module.exports = class GorilinkPlayer extends EventEmitter {
         } else if (this.track && this.loopedAll) {
           this.manager.emit('trackEnd', { player: this, track: this.track })
           this.queue.add(this.queue.shift())
-          this.play()
+          return this.play()
         } else if (this.queue.length <= 1) {
           this.queue.shift()
           this.playing = false

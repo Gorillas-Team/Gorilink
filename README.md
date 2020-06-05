@@ -89,8 +89,3 @@ client.on('message', async (message) => {
 // Logging the bot
 client.login('your-token')
 ```
-
-## Authors
-  - Psykka
-  - zMigueel
-  - DerpyXD

@@ -19,7 +19,8 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     this.paused = false
     this.track = {}
     this.voiceUpdateState = null
-    this.looped = false
+    this.loopedSingle = false
+    this.loopedAll = false
     this.position = 0
 
     this.queue = new Queue()
@@ -68,8 +69,12 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     return this.send('seek', { position: pos })
   }
 
-  loop(bool){
-    return this.looped = bool
+  loopSingle(bool){
+    return this.loopedSingle = bool
+  }
+
+  loopAll(bool) {
+    return this.loopedAll = bool
   }
 
   setEQ(bands) {
@@ -94,9 +99,13 @@ module.exports = class GorilinkPlayer extends EventEmitter {
         this.manager.emit('trackStart', { player: this, track: this.track })
       },
       'TrackEndEvent': function () {
-        if (this.track && this.looped) {
+        if (this.track && this.loopedSingle) {
           this.manager.emit('trackEnd', { player: this, track: this.track })
           return this.play()
+        } else if (this.track && this.loopedAll) {
+          this.manager.emit('trackEnd', { player: this, track: this.track })
+          this.queue.add(this.queue.shift())
+          this.play()
         } else if (this.queue.length <= 1) {
           this.queue.shift()
           this.playing = false

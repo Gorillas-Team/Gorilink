@@ -68,6 +68,10 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     return this.send('seek', { position: pos })
   }
 
+  loop(bool){
+    return this.looped = bool
+  }
+
   setEQ(bands) {
     const packet = this.send('equalizer', { bands })
     this.state.equalizer = bands
@@ -80,6 +84,7 @@ module.exports = class GorilinkPlayer extends EventEmitter {
   }
 
   destroy() {
+    this.manager.leave(this.guild.id || this.guild)
     return this.send('destroy')
   }
 

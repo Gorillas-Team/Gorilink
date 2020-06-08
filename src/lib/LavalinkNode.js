@@ -59,7 +59,7 @@ module.exports = class LavalinkNode {
 
     const packet = JSON.parse(data)
 
-    if (packet.op && packet.op == 'stats'){
+    if (packet.op && packet.op == 'stats') {
       this.stats = { ...packet }
       delete this.stats.op
     }

@@ -1,6 +1,6 @@
 {
   "name": "gorilink",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "main": "src/index.js",
   "license": "MIT",
   "scripts": {
@@ -26,6 +26,7 @@
     "nodemon": "^2.0.3"
   },
   "dependencies": {
+    "@discordjs/collection": "^0.1.5",
     "node-fetch": "^2.6.0",
     "ws": "^7.2.5"
   },
@@ -41,5 +42,9 @@
     "lavalink client",
     "discord bot"
   ],
-  "contributors": ["psyka", "zmigueel", "derpyxd"]
+  "contributors": [
+    "psyka",
+    "zmigueel",
+    "derpyxd"
+  ]
 }

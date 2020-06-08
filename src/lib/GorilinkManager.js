@@ -1,7 +1,7 @@
 const { EventEmitter } = require('events')
 const LavalinkNode = require('./LavalinkNode')
 const GorilinkPlayer = require('./GorilinkPlayer')
-const Prop = require('./structures/NodeStorage')
+const Collection = require('@discordjs/collection')
 
 const fetch = require('node-fetch')
 
@@ -13,10 +13,10 @@ module.exports = class GorilinkManager extends EventEmitter {
 
     this.client = client
 
-    this.nodes = new Prop()
-    this.players = new Prop()
-    this.voiceStates = new Prop()
-    this.voiceServers = new Prop()
+    this.nodes = new Collection()
+    this.players = new Collection()
+    this.voiceStates = new Collection()
+    this.voiceServers = new Collection()
 
     this.user = options.user || client.user.id
     this.shards = options.shards || 0
@@ -40,7 +40,7 @@ module.exports = class GorilinkManager extends EventEmitter {
     return node
   }
 
-  join(data = {}) {
+  join(data = {}, options = {}) {
     const player = this.players.get(data.guild)
     if (player) return player
     this.sendWS({
@@ -48,8 +48,8 @@ module.exports = class GorilinkManager extends EventEmitter {
       d: {
         guild_id: data.guild,
         channel_id: data.voiceChannel.id || data.voiceChannel,
-        self_mute: data.selfMute || false,
-        self_deaf: data.selfDeaf || false
+        self_mute: options.selfMute || false,
+        self_deaf: options.selfDeaf || false
       }
     })
     return this.spawnPlayer(data)

@@ -69,13 +69,13 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     return this.send('seek', { position: pos })
   }
 
-  loopSingle(bool){
-    if(this.loopedAll) this.loopedAll = false
+  loopSingle(bool) {
+    if (this.loopedAll) this.loopedAll = false
     return this.loopedSingle = bool
   }
 
   loopAll(bool) {
-    if(this.loopedSingle) this.loopedSingle = false
+    if (this.loopedSingle) this.loopedSingle = false
     return this.loopedAll = bool
   }
 

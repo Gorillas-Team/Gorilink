@@ -4,10 +4,9 @@ module.exports = class LavalinkNode {
   constructor(manager, options = {}) {
     this.manager = manager
     this.tag = options.tag || null
-    this.host = options.host
-    this.port = options.port || 2333
-    this.password = options.password || 'youshallnotpass'
-
+    Object.defineProperty(this, 'host', { value: options.host || '127.0.0.1', enumerable: false })
+    Object.defineProperty(this, 'port', { value: options.port || 2333, enumerable: false })
+    Object.defineProperty(this, 'password', { value: options.password || 'youshallnotpass', enumerable: false })
     this.ws = null
     this.reconnectInterval = options.reconnectInterval || 5000
 
@@ -60,7 +59,7 @@ module.exports = class LavalinkNode {
 
     const packet = JSON.parse(data)
 
-    if (packet.op && packet.op == 'stats'){
+    if (packet.op && packet.op == 'stats') {
       this.stats = { ...packet }
       delete this.stats.op
     }

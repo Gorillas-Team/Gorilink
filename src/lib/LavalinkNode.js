@@ -9,6 +9,9 @@ module.exports = class LavalinkNode {
     Object.defineProperty(this, 'password', { value: options.password || 'youshallnotpass', enumerable: false })
     this.ws = null
     this.reconnectInterval = options.reconnectInterval || 5000
+    this.resumeKey = options.resumeKey
+    this._queue = []
+    this._resumeTimeout = 120
 
     this.stats = {
       players: 0,
@@ -49,6 +52,11 @@ module.exports = class LavalinkNode {
 
   onOpen() {
     if (this._reconnect) clearTimeout(this._reconnect)
+    this._queueFlush()
+      .catch(error => this.manager.emit('nodeError', { node: this, error }))
+
+    if (this.resumeKey) this.configureResuming(this.resumeKey).catch(error => this.manager.emit('nodeError', { node: this, error }))
+
     this.manager.emit('nodeConnect', this)
     this.connected = true
   }
@@ -105,6 +113,14 @@ module.exports = class LavalinkNode {
     this.ws = null
 
     return true
+  }
+
+  configureResuming(key, timeout = this._resumeTimeout) {
+    return this.send({ op: 'configureResuming', key, timeout })
+  }
+
+  async _queueFlush() {
+    this._queue = []
   }
 
   async send(data) {

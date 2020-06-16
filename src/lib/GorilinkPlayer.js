@@ -1,5 +1,6 @@
 const { EventEmitter } = require('events')
 const Queue = require('./structures/Queue')
+const { isNumber } = require('util')
 
 module.exports = class GorilinkPlayer extends EventEmitter {
   constructor(node, options, manager) {
@@ -19,8 +20,7 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     this.paused = false
     this.track = {}
     this.voiceUpdateState = null
-    this.loopedSingle = false
-    this.loopedAll = false
+    this.looped = 0
     this.position = 0
 
     this.queue = new Queue()
@@ -69,14 +69,9 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     return this.send('seek', { position: pos })
   }
 
-  loopSingle(bool) {
-    if (this.loopedAll) this.loopedAll = false
-    return this.loopedSingle = bool
-  }
-
-  loopAll(bool) {
-    if (this.loopedSingle) this.loopedSingle = false
-    return this.loopedAll = bool
+  loop(op) {
+    if(op >= 2 && op <= 0 && !isNaN(op)) throw Error('Invalid op.')
+    return this.looped = op
   }
 
   setEQ(bands) {
@@ -100,10 +95,10 @@ module.exports = class GorilinkPlayer extends EventEmitter {
         this.manager.emit('trackStart', { player: this, track: this.track })
       },
       'TrackEndEvent': function () {
-        if (this.track && this.loopedSingle) {
+        if (this.track && this.looped == 1) {
           this.manager.emit('trackEnd', { player: this, track: this.track })
           return this.play()
-        } else if (this.track && this.loopedAll) {
+        } else if (this.track && this.looped == 2) {
           this.manager.emit('trackEnd', { player: this, track: this.track })
           this.queue.add(this.queue.shift())
           return this.play()
@@ -125,7 +120,7 @@ module.exports = class GorilinkPlayer extends EventEmitter {
       },
       'TrackExceptionEvent': function () {
         this.queue.shift()
-        this.manager.emit('trackError', { player: this, tracK: this.track, data })
+        this.manager.emit('trackError', { player: this, track: this.track, data })
       },
       'WebSocketClosedEvent': function () {
         if ([4015, 4009].includes(data.code)) {

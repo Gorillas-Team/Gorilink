@@ -4,23 +4,61 @@ const GorilinkPlayer = require('./GorilinkPlayer')
 const Collection = require('@discordjs/collection')
 
 const fetch = require('node-fetch')
-
+/**
+ * Main library class in which all events and operations for nodes and players are managed
+ * @extends EventEmitter
+ */
 module.exports = class GorilinkManager extends EventEmitter {
+  /**
+   * The constructor of the Manager
+   * @param {Client} client Discord client
+   * @param {Array} nodes A Array of options that the {@link GorilinkManager} will connect
+   * @param {Object} options The options for the Manager
+   */
   constructor(client, nodes, options = {}) {
     super()
 
     if (!client) throw new Error('Invalid client provide')
 
+    /**
+     * Discord Client
+     * @type {Client}
+     */
     this.client = client
 
+    /**
+     * A [**Collection**](https://github.com/discordjs/collection) of Lavalink Nodes {@link LavalinkNode}
+     */
     this.nodes = new Collection()
+
+    /**
+     * A [**Collection**](https://github.com/discordjs/collection) of GorilinkPlayer {@link GorilinkPlayer}
+     */
     this.players = new Collection()
+
+    /**
+     * A [**Collection**](https://github.com/discordjs/collection) of Voice States
+     */
     this.voiceStates = new Collection()
+
+    /**
+     * A [**Collection**](https://github.com/discordjs/collection) of Voice Servers
+     */
     this.voiceServers = new Collection()
 
+    /**
+     * Discord Client user id
+     */
     this.user = options.user || client.user.id
+
+    /**
+     * Total of Discord Client  shards
+     */
     this.shards = options.shards || 0
 
+    /**
+     * A instance of Gorilink player used to create new players
+     */
     this.Player = options.Player || GorilinkPlayer
 
     for (const node of nodes) this.createNode(node)
@@ -31,6 +69,11 @@ module.exports = class GorilinkManager extends EventEmitter {
     })
   }
 
+  /**
+   * Creates a node instance
+   * @param {Object} options Options of the lavalink node
+   * @returns {LavalinkNode} Lavalink node
+   */
   createNode(options) {
     const node = new LavalinkNode(this, options)
     this.nodes.set(options.tag || options.host, node)
@@ -40,6 +83,12 @@ module.exports = class GorilinkManager extends EventEmitter {
     return node
   }
 
+  /**
+   * Joins on guild channel
+   * @param {Object} data Guild and voice channel data
+   * @param {Object} options Self mute and self deaf options
+   * @returns {GorilinkPlayer} Guild player
+   */
   join(data = {}, options = {}) {
     const player = this.players.get(data.guild)
     if (player) return player
@@ -55,6 +104,11 @@ module.exports = class GorilinkManager extends EventEmitter {
     return this.spawnPlayer(data)
   }
 
+  /**
+   * Leave from voice channel of the guild
+   * @param {String} guild Guild id you want to leave
+   * @returns {GorilinkPlayer} Deleted player
+   */
   leave(guild) {
     this.sendWS({
       op: 4,
@@ -75,11 +129,19 @@ module.exports = class GorilinkManager extends EventEmitter {
     return this.players.delete(guild)
   }
 
+  /**
+   * For handling voiceServerUpdate
+   * @param {Object} data The data directly from discord
+   */
   voiceServersUpdate(data) {
     this.voiceServers.set(data.guild_id, data)
     return this._attemptConnection(data.guild_id)
   }
 
+  /**
+   * For handling voiceStateUpdate
+   * @param {Object} data The data directly from discord
+   */
   voiceStateUpdate(data) {
     if (data.user_id != this.user) return
 
@@ -92,6 +154,11 @@ module.exports = class GorilinkManager extends EventEmitter {
     this.voiceStates.delete(data.guild_id)
   }
 
+  /**
+   * Handles the data of voiceServerUpdate & voiceStateUpdate to see if a connection
+   * is possible with the data we have and if it is then make the connection to lavalink
+   * @param {String} guildId The guild id that we're trying to attempt to connect to
+   */
   _attemptConnection(guildId) {
     const server = this.voiceServers.get(guildId)
     const state = this.voiceStates.get(guildId)
@@ -105,6 +172,9 @@ module.exports = class GorilinkManager extends EventEmitter {
     return true
   }
 
+  /**
+   * Get the ideal node for that connection based on the stats of all connected nodes
+   */
   get idealNodes() {
     return [...this.nodes.values()]
       .filter(node => node.connected)
@@ -115,6 +185,10 @@ module.exports = class GorilinkManager extends EventEmitter {
       })
   }
 
+  /**
+   * Creates a instance of {@link GorilinkPlayer}
+   * @param {Object} data Guild data
+   */
   spawnPlayer(data) {
     const has = this.nodes.get(data.guild)
     if (has) return has
@@ -128,6 +202,11 @@ module.exports = class GorilinkManager extends EventEmitter {
     return player
   }
 
+  /**
+   * Fetch tracks based on query and a source
+   * @param {String} query Query string you want to search
+   * @param {String} source Media source
+   */
   async fetchTracks(query, source) {
     const node = this.idealNodes[0]
 
@@ -145,6 +224,10 @@ module.exports = class GorilinkManager extends EventEmitter {
       .catch(error => { throw new Error('Fail to fetch tracks', error) })
   }
 
+  /**
+   * Send to discord WebSocket packets
+   * @param {Object} data Discord packet data
+   */
   sendWS(data) {
     const guild = this.client.guilds.cache.get(data.d.guild_id)
     if (!guild) return

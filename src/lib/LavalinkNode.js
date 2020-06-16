@@ -1,5 +1,4 @@
 const WebSocket = require('ws')
-const GorilinkManager = require('./GorilinkManager')
 
 /**
  * Represents a Lavalink node instance

@@ -48,7 +48,11 @@ module.exports = class LavalinkNode {
   }
 
   onOpen() {
-    if (this._reconnect) clearTimeout(this._reconnect)
+    if (this._reconnect) {
+      clearTimeout(this._reconnect)
+      delete this._reconnect
+    }
+
     this.manager.emit('nodeConnect', this)
     this.connected = true
   }
@@ -90,7 +94,7 @@ module.exports = class LavalinkNode {
 
   reconnect() {
     this._reconnect = setTimeout(() => {
-      this.ready = false
+      this.connected = false
       this.ws.removeAllListeners()
       this.ws = null
 

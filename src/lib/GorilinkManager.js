@@ -137,12 +137,12 @@ module.exports = class GorilinkManager extends EventEmitter {
 
     const params = new URLSearchParams({ identifier: query })
 
-    return fetch(`http://${node.host}:${node.port}/loadtracks?${params}`, {
+    return await fetch(`http://${node.host}:${node.port}/loadtracks?${params}`, {
       headers: {
         Authorization: node.password
       }
     }).then(res => res.json())
-      .catch(error => { throw error })
+      .catch(error => { throw new Error('Fail to fetch tracks', error) })
   }
 
   sendWS(data) {

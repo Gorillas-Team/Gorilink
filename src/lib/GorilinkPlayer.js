@@ -1,7 +1,6 @@
 const { EventEmitter } = require('events')
 const Queue = require('./structures/Queue')
 const { isNumber } = require('util')
-const Queue = require('./structures/Queue')
 
 /**
  * Represents a guild Player instance

@@ -1,15 +1,80 @@
 const WebSocket = require('ws')
 
-module.exports = class LavalinkNode {
+/**
+ * Represents a Lavalink node instance
+ */
+class LavalinkNode {
+
+  /**
+   * The constructor of the LavalinkNode
+   * @param {GorilinkManager} manager manager of lavalink node
+   * @param {Object} options options of the lavalink node
+   */
   constructor(manager, options = {}) {
+    /**
+     * GorilinkManager instance
+     * @type {GorilinkManager}
+     */
     this.manager = manager
+
+    /**
+     * Name of node
+     * @type {String}
+     */
     this.tag = options.tag || null
-    Object.defineProperty(this, 'host', { value: options.host || '127.0.0.1', enumerable: false })
-    Object.defineProperty(this, 'port', { value: options.port || 2333, enumerable: false })
-    Object.defineProperty(this, 'password', { value: options.password || 'youshallnotpass', enumerable: false })
+
+    /**
+     * Node host
+     * @type {String}
+     */
+    Object.defineProperty(this, 'host', { value: options.host || '127.0.0.1' })
+
+    /**
+     * Node port
+     * @type {Number}
+     */
+    Object.defineProperty(this, 'port', { value: options.port || 2333 })
+
+    /**
+     * Node password
+     * @type {String}
+     */
+    Object.defineProperty(this, 'password', { value: options.password || 'youshallnotpass' })
+
+    /**
+     * Client WebSocket connection
+     * @type {WebSocket}
+     */
     this.ws = null
+
+    /**
+     * Reconnection attempt time with the node
+     * @type {Number}
+     */
     this.reconnectInterval = options.reconnectInterval || 5000
 
+    /**
+     * The resume key of the session
+     * @type {String}
+     */
+    this.resumeKey = options.resumeKey || null
+
+    /**
+     * Number of seconds after disconnecting before the session is closed anyways.
+     * @type {Number}
+     */
+    Object.defineProperty(this, '_resumeTimeout', { value: options.resumeTimeout || 60, writable: true })
+
+    /**
+     * Queue of packets not send when the node is discornnected
+     * @type {Array}
+     */
+    Object.defineProperty(this, '_queue', { value: [], writable: true })
+
+    /**
+     * Stats of lavalink node
+     * @type {Object}
+     */
     this.stats = {
       players: 0,
       playingPlayers: 0,
@@ -27,9 +92,16 @@ module.exports = class LavalinkNode {
       }
     }
 
+    /**
+     * State of connection with node
+     * @type {Boolean}
+     */
     this.connected = false
   }
 
+  /**
+   * Connects the node to Lavalink
+   */
   connect() {
     if (this.ws) this.ws.close()
 
@@ -39,6 +111,8 @@ module.exports = class LavalinkNode {
       'User-Id': this.manager.user
     }
 
+    if (this.resumeKey) headers['Resume-Key'] = this.resumeKey
+
     this.ws = new WebSocket(`ws:${this.host}:${this.port}/`, { headers })
 
     this.ws.on('open', this.onOpen.bind(this))
@@ -47,12 +121,27 @@ module.exports = class LavalinkNode {
     this.ws.on('close', this.onClose.bind(this))
   }
 
+  /**
+   * A private function for handling the open event from WebSocket
+   */
   onOpen() {
-    if (this._reconnect) clearTimeout(this._reconnect)
+    if (this._reconnect) {
+      clearTimeout(this._reconnect)
+      delete this._reconnect
+    }
+
+    this._queueFlush()
+
+    if (this.resumeKey) this.configureResuming(this.resumeKey)
+
     this.manager.emit('nodeConnect', this)
     this.connected = true
   }
 
+  /**
+   * Private function for handling the message event from WebSocket
+   * @param data The data that come from lavalink
+   */
   onMessage(data) {
     if (data instanceof Array) data = Buffer.concat(data)
     else if (data instanceof ArrayBuffer) data = Buffer.from(data)
@@ -72,12 +161,20 @@ module.exports = class LavalinkNode {
     this.manager.emit('raw', packet)
   }
 
+  /**
+   * Private function for handling the close event from WebSocket
+   * @param event WebSocket event data
+   */
   onClose(event) {
     this.manager.emit('nodeClose', { event, node: this })
 
     if (event.code != null || event.reason != 'destroy') return this.reconnect()
   }
 
+  /**
+   * Private function for handling the error event from WebSocket
+   * @param event WebSocket event data
+   */
   onError(event) {
     const err = event && event.error ? event.error : event
 
@@ -88,9 +185,12 @@ module.exports = class LavalinkNode {
     return this.reconnect()
   }
 
+  /**
+   * Handles reconnecting if something happens and the node discounnects
+   */
   reconnect() {
     this._reconnect = setTimeout(() => {
-      this.ready = false
+      this.connected = false
       this.ws.removeAllListeners()
       this.ws = null
 
@@ -100,6 +200,10 @@ module.exports = class LavalinkNode {
     }, this.reconnectInterval)
   }
 
+  /**
+   * Destroy lavalink WebSocket connection
+   * @returns {Boolean}
+   */
   destroy() {
     this.ws.close(1000, 'destroy')
     this.ws = null
@@ -107,13 +211,48 @@ module.exports = class LavalinkNode {
     return true
   }
 
-  async send(data) {
+  /**
+   * Configures the resuming key for the LavalinkNode
+   * @param {*} key key the actual key to send to lavalink to resume with
+   * @param {*} timeout timeout how long before the key invalidates and lavalinknode will stop expecting you to resume
+   */
+  configureResuming(key, timeout = this._resumeTimeout) {
+    this.send({ op: 'configureResuming', key, timeout })
+  }
+
+  /**
+   * Flushs the send queue
+   */
+  async _queueFlush() {
+    if(this._queue.length == 0) return
+
+    await this._queue.map(this._send.bind(this))
+
+    this._queue = []
+  }
+
+  /**
+   * Sends data to the Lavalink or push it in a queue if the node is not connected
+   * @param {Object} data Data wanted to send to lavalink
+   */
+  send(data) {
     const packet = JSON.stringify(data)
 
-    if (!this.connected) return
+    console.log(this.connected)
+    if (!this.connected) return this._queue.push(packet)
 
-    return await this.ws.send(packet, err => {
+    return this._send(packet)
+  }
+
+  /**
+   * Sends data to the Lavalink Websocket
+   * @param data data to send
+   */
+  async _send(data) {
+    return await this.ws.send(data, err => {
       if (err) throw err
     })
   }
 }
+
+module.exports = LavalinkNode

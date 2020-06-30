@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "lint:fix": "eslint --fix src/ examples/",
-    "lint": "eslint src/ examples/"
+    "lint": "eslint src/ examples/",
+    "jsdoc": "jsdoc -c .jsdocs.json --verbose -r src/ -R README.md"
   },
   "engines": {
     "node": ">=10",
@@ -23,6 +24,7 @@
     "discord.js": "^12.2.0",
     "eslint": "^6.8.0",
     "jsdoc": "^3.6.4",
+    "jsdoc-template": "https://github.com/braintree/jsdoc-template",
     "nodemon": "^2.0.3"
   },
   "dependencies": {
@@ -43,8 +45,7 @@
     "discord bot"
   ],
   "contributors": [
-    "psyka",
-    "zmigueel",
-    "derpyxd"
+    "Psyka (https://github.com/Psykka)",
+    "zMigueel (https://github.com/zMigueel)"
   ]
 }

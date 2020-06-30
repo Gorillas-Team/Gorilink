@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+      GorilinkManager.js - Documentation
+  </title>
+
+  <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  
+
+  
+
+  <!-- start Mixpanel -->
+  <script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
+  0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+  for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
+  mixpanel.init("1919205b2da72e4da3b9b6639b444d59");</script>
+  <!-- end Mixpanel -->
+</head>
+
+<body>
+  <svg style="display: none;">
+    <defs>
+      <symbol id="linkIcon" fill="#706d77" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+  <label for="nav-trigger" class="navicon-button x">
+    <div class="navicon"></div>
+  </label>
+
+  <label for="nav-trigger" class="overlay"></label>
+
+  <div class="top-nav-wrapper">
+    <ul>
+      <li >
+        <a href="index.html">
+          
+            <svg fill="#6D6D6D" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          
+          
+        </a>
+      </li>
+
+      
+
+    </ul>
+  </div>
+
+  <nav>
+    <h3 class="reference-title">
+      Braintree SDK Client Reference
+    </h3>
+
+    
+
+    <h3>Classes</h3><ul><li id="GorilinkManager-nav"><a href="GorilinkManager.html">GorilinkManager</a><ul class='methods'><li data-type="method" id="GorilinkManager-_attemptConnection-nav"><a href="GorilinkManager.html#_attemptConnection">_attemptConnection</a></li><li data-type="method" id="GorilinkManager-createNode-nav"><a href="GorilinkManager.html#createNode">createNode</a></li><li data-type="method" id="GorilinkManager-fetchTracks-nav"><a href="GorilinkManager.html#fetchTracks">fetchTracks</a></li><li data-type="method" id="GorilinkManager-join-nav"><a href="GorilinkManager.html#join">join</a></li><li data-type="method" id="GorilinkManager-leave-nav"><a href="GorilinkManager.html#leave">leave</a></li><li data-type="method" id="GorilinkManager-sendWS-nav"><a href="GorilinkManager.html#sendWS">sendWS</a></li><li data-type="method" id="GorilinkManager-spawnPlayer-nav"><a href="GorilinkManager.html#spawnPlayer">spawnPlayer</a></li><li data-type="method" id="GorilinkManager-voiceServersUpdate-nav"><a href="GorilinkManager.html#voiceServersUpdate">voiceServersUpdate</a></li><li data-type="method" id="GorilinkManager-voiceStateUpdate-nav"><a href="GorilinkManager.html#voiceStateUpdate">voiceStateUpdate</a></li></ul></li><li id="GorilinkPlayer-nav"><a href="GorilinkPlayer.html">GorilinkPlayer</a><ul class='methods'><li data-type="method" id="GorilinkPlayer-connect-nav"><a href="GorilinkPlayer.html#connect">connect</a></li><li data-type="method" id="GorilinkPlayer-destroy-nav"><a href="GorilinkPlayer.html#destroy">destroy</a></li><li data-type="method" id="GorilinkPlayer-getEvent-nav"><a href="GorilinkPlayer.html#getEvent">getEvent</a></li><li data-type="method" id="GorilinkPlayer-loop-nav"><a href="GorilinkPlayer.html#loop">loop</a></li><li data-type="method" id="GorilinkPlayer-pause-nav"><a href="GorilinkPlayer.html#pause">pause</a></li><li data-type="method" id="GorilinkPlayer-play-nav"><a href="GorilinkPlayer.html#play">play</a></li><li data-type="method" id="GorilinkPlayer-seek-nav"><a href="GorilinkPlayer.html#seek">seek</a></li><li data-type="method" id="GorilinkPlayer-send-nav"><a href="GorilinkPlayer.html#send">send</a></li><li data-type="method" id="GorilinkPlayer-setEQ-nav"><a href="GorilinkPlayer.html#setEQ">setEQ</a></li><li data-type="method" id="GorilinkPlayer-stop-nav"><a href="GorilinkPlayer.html#stop">stop</a></li><li data-type="method" id="GorilinkPlayer-volume-nav"><a href="GorilinkPlayer.html#volume">volume</a></li></ul></li><li id="LavalinkNode-nav"><a href="LavalinkNode.html">LavalinkNode</a><ul class='methods'><li data-type="method" id="LavalinkNode-_queueFlush-nav"><a href="LavalinkNode.html#_queueFlush">_queueFlush</a></li><li data-type="method" id="LavalinkNode-_send-nav"><a href="LavalinkNode.html#_send">_send</a></li><li data-type="method" id="LavalinkNode-configureResuming-nav"><a href="LavalinkNode.html#configureResuming">configureResuming</a></li><li data-type="method" id="LavalinkNode-connect-nav"><a href="LavalinkNode.html#connect">connect</a></li><li data-type="method" id="LavalinkNode-destroy-nav"><a href="LavalinkNode.html#destroy">destroy</a></li><li data-type="method" id="LavalinkNode-onClose-nav"><a href="LavalinkNode.html#onClose">onClose</a></li><li data-type="method" id="LavalinkNode-onError-nav"><a href="LavalinkNode.html#onError">onError</a></li><li data-type="method" id="LavalinkNode-onMessage-nav"><a href="LavalinkNode.html#onMessage">onMessage</a></li><li data-type="method" id="LavalinkNode-onOpen-nav"><a href="LavalinkNode.html#onOpen">onOpen</a></li><li data-type="method" id="LavalinkNode-reconnect-nav"><a href="LavalinkNode.html#reconnect">reconnect</a></li><li data-type="method" id="LavalinkNode-send-nav"><a href="LavalinkNode.html#send">send</a></li></ul></li><li id="Queue-nav"><a href="Queue.html">Queue</a><ul class='methods'><li data-type="method" id="Queue-add-nav"><a href="Queue.html#add">add</a></li><li data-type="method" id="Queue-first-nav"><a href="Queue.html#first">first</a></li><li data-type="method" id="Queue-remove-nav"><a href="Queue.html#remove">remove</a></li><li data-type="method" id="Queue-removeFirst-nav"><a href="Queue.html#removeFirst">removeFirst</a></li></ul></li></ul>
+  </nav>
+
+  <div id="main">
+    
+      <h1 class="page-title">
+        GorilinkManager.js
+      </h1>
+    
+
+    
+      
+
+<section>
+  <article>
+    <pre class="prettyprint source linenums"><code>const { EventEmitter } = require('events')
+const LavalinkNode = require('./LavalinkNode')
+const GorilinkPlayer = require('./GorilinkPlayer')
+const Collection = require('@discordjs/collection')
+
+const fetch = require('node-fetch')
+/**
+ * Main library class in which all events and operations for nodes and players are managed
+ * @extends EventEmitter
+ */
+class GorilinkManager extends EventEmitter {
+  /**
+   * The constructor of {@link GorilinkManager}
+   * @param {Client} client Discord client
+   * @param {Array} nodes A Array of options that the {@link GorilinkManager} will connect
+   * @param {Object} options The options for the Manager
+   */
+  constructor(client, nodes, options = {}) {
+    super()
+
+    if (!client) throw new Error('Invalid client provide')
+
+    /**
+     * Discord Client
+     * @type {Client}
+     */
+    this.client = client
+
+    /**
+     * A [**Collection**](https://github.com/discordjs/collection) of {@link LavalinkNode}
+     */
+    this.nodes = new Collection()
+
+    /**
+     * A [**Collection**](https://github.com/discordjs/collection) of {@link GorilinkPlayer}
+     */
+    this.players = new Collection()
+
+    /**
+     * A [**Collection**](https://github.com/discordjs/collection) of [Voice States](https://discord.com/developers/docs/topics/gateway#voice-state-update)
+     */
+    this.voiceStates = new Collection()
+
+    /**
+     * A [**Collection**](https://github.com/discordjs/collection) of [Voice Servers](https://discord.com/developers/docs/topics/gateway#voice-server-update)
+     */
+    this.voiceServers = new Collection()
+
+    /**
+     * Discord Client user id
+     */
+    this.user = options.user || client.user.id
+
+    /**
+     * Total of Discord Client  shards
+     */
+    this.shards = options.shards || 0
+
+    /**
+     * A instance of Gorilink player used to create new players
+     */
+    this.Player = options.Player || GorilinkPlayer
+
+    for (const node of nodes) this.createNode(node)
+
+    this.client.on('raw', packet => {
+      if (packet.t == 'VOICE_SERVER_UPDATE') this.voiceServersUpdate(packet.d)
+      if (packet.t == 'VOICE_STATE_UPDATE') this.voiceStateUpdate(packet.d)
+    })
+  }
+
+  /**
+   * Creates a node instance
+   * @param {Object} options Options of the lavalink node
+   * @returns {LavalinkNode} Lavalink node
+   */
+  createNode(options) {
+    const node = new LavalinkNode(this, options)
+    this.nodes.set(options.tag || options.host, node)
+
+    node.connect()
+
+    return node
+  }
+
+  /**
+   * Joins on guild channel
+   * @param {Object} data Guild and voice channel data
+   * @param {Object} options Self mute and self deaf options
+   * @returns {GorilinkPlayer} Guild player
+   */
+  join(data = {}, options = {}) {
+    const player = this.players.get(data.guild)
+    if (player) return player
+    this.sendWS({
+      op: 4,
+      d: {
+        guild_id: data.guild,
+        channel_id: data.voiceChannel.id || data.voiceChannel,
+        self_mute: options.selfMute || false,
+        self_deaf: options.selfDeaf || false
+      }
+    })
+    return this.spawnPlayer(data)
+  }
+
+  /**
+   * Leave from voice channel of the guild
+   * @param {String} guild Guild id you want to leave
+   * @returns {GorilinkPlayer} Deleted player
+   */
+  leave(guild) {
+    this.sendWS({
+      op: 4,
+      d: {
+        guild_id: guild,
+        channel_id: null,
+        self_mute: false,
+        self_deaf: false
+      }
+    })
+
+    const player = this.players.get(guild)
+    if (!player) throw false
+
+    player.removeAllListeners()
+    player.send('destroy')
+
+    return this.players.delete(guild)
+  }
+
+  /**
+   * For handling voiceServerUpdate
+   * @param {Object} data The data directly from discord
+   */
+  voiceServersUpdate(data) {
+    this.voiceServers.set(data.guild_id, data)
+    return this._attemptConnection(data.guild_id)
+  }
+
+  /**
+   * For handling voiceStateUpdate
+   * @param {Object} data The data directly from discord
+   */
+  voiceStateUpdate(data) {
+    if (data.user_id != this.user) return
+
+    if (data.channel_id) {
+      this.voiceStates.set(data.guild_id, data)
+      return this._attemptConnection(data.guild_id)
+    }
+
+    this.voiceServers.delete(data.guild_id)
+    this.voiceStates.delete(data.guild_id)
+  }
+
+  /**
+   * Handles the data of voiceServerUpdate &amp; voiceStateUpdate to see if a connection
+   * is possible with the data we have and if it is then make the connection to lavalink
+   * @param {String} guildId The guild id that we're trying to attempt to connect to
+   */
+  _attemptConnection(guildId) {
+    const server = this.voiceServers.get(guildId)
+    const state = this.voiceStates.get(guildId)
+
+    if (!server) return false
+
+    const player = this.players.get(guildId)
+    if (!player) return false
+
+    player.connect({ sessionId: state ? state.session_id : player.voiceUpdateState.sessionId, event: server })
+    return true
+  }
+
+  /**
+   * Get the ideal node for that connection based on the stats of all connected nodes
+   */
+  get idealNodes() {
+    return [...this.nodes.values()]
+      .filter(node => node.connected)
+      .sort((a, b) => {
+        const aLoad = a.stats.cpu ? a.stats.cpu.systemLoad / a.stats.cpu.cores * 100 : 0
+        const bLoad = b.stats.cpu ? b.stats.cpu.systemLoad / b.stats.cpu.core * 100 : 0
+        return aLoad - bLoad
+      })
+  }
+
+  /**
+   * Creates a instance of {@link GorilinkPlayer}
+   * @param {Object} data Guild data
+   */
+  spawnPlayer(data) {
+    const has = this.nodes.get(data.guild)
+    if (has) return has
+
+    const node = this.nodes.get(this.idealNodes[0].tag || this.idealNodes[0].host)
+    if (!node) throw Error('No nodes avalible')
+
+    const player = new this.Player(node, data, this)
+    this.players.set(data.guild, player)
+
+    return player
+  }
+
+  /**
+   * Fetch tracks based on query and a source
+   * @param {String} query Query string you want to search
+   * @param {String} source Media source
+   * @returns {Promise}
+   */
+  async fetchTracks(query, source) {
+    const node = this.idealNodes[0]
+
+    if (!/^https?:\/\//.test(query)) {
+      query = `${source || 'yt'}search:${query}`
+    }
+
+    const params = new URLSearchParams({ identifier: query })
+
+    return await fetch(`http://${node.host}:${node.port}/loadtracks?${params}`, {
+      headers: {
+        Authorization: node.password
+      }
+    }).then(res => res.json())
+      .catch(error => { throw new Error('Fail to fetch tracks', error) })
+  }
+
+  /**
+   * Send to discord WebSocket packets
+   * @param {Object} data Discord packet data
+   */
+  sendWS(data) {
+    const guild = this.client.guilds.cache.get(data.d.guild_id)
+    if (!guild) return
+
+    return guild.shard.send(data)
+  }
+}
+
+module.exports = GorilinkManager</code></pre>
+  </article>
+</section>
+
+    
+
+
+  </div>
+
+  <br class="clear">
+
+  <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+  </footer>
+
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/pagelocation.js"></script>
+
+  
+
+</body>
+</html>

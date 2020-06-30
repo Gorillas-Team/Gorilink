@@ -3,7 +3,7 @@ name: Docs
 on:
   push:
     branches:
-      - dev
+      - master
 
 jobs:
   build:
@@ -27,7 +27,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: dev
+          BRANCH: gh-pages
           FOLDER: out
-          TARGET_FOLDER: docs
-

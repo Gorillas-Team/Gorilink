@@ -3,7 +3,7 @@ const WebSocket = require('ws')
 /**
  * Represents a Lavalink node instance
  */
-module.exports = class LavalinkNode {
+class LavalinkNode {
 
   /**
    * The constructor of the LavalinkNode
@@ -254,3 +254,5 @@ module.exports = class LavalinkNode {
     })
   }
 }
+
+module.exports = LavalinkNode

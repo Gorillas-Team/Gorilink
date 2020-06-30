@@ -922,6 +922,10 @@ js2xmlparser@^4.0.1:
   dependencies:
     xmlcreate "^2.0.3"
 
+"jsdoc-template@https://github.com/braintree/jsdoc-template":
+  version "3.3.0"
+  resolved "https://github.com/braintree/jsdoc-template#a55dcb67f51599e86f4125b4abb364f4d30e9679"
+
 jsdoc@^3.6.4:
   version "3.6.4"
   resolved "https://registry.yarnpkg.com/jsdoc/-/jsdoc-3.6.4.tgz#246b2832a0ea8b37a441b61745509cfe29e174b6"

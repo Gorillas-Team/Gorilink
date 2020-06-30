@@ -5,7 +5,7 @@ const Queue = require('./structures/Queue')
  * Represents a guild Player instance
  * @extends EventEmitter
  */
-module.exports = class GorilinkPlayer extends EventEmitter {
+class GorilinkPlayer extends EventEmitter {
   /**
    * The constructor of GorilinkPlayer
    * @param {LavalinkNode} node Your node instance
@@ -16,14 +16,12 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     super()
 
     /**
-     * GorilinkManager instance
-     * @type {GorilinkManager}
+     * {@link GorilinkManager} instance
      */
     this.manager = manager
 
     /**
-     * LavalinkNode instance
-     * @type {LavalinkNode}
+     * {@link LavalinkNode} instance
      */
     this.node = node
 
@@ -41,7 +39,7 @@ module.exports = class GorilinkPlayer extends EventEmitter {
 
     /**
      * Player textChannel
-     * @type {TextChannel}
+     * @type {?TextChannel}
      */
     this.textChannel = options.textChannel
 
@@ -164,7 +162,10 @@ module.exports = class GorilinkPlayer extends EventEmitter {
   }
 
   /**
-   *
+   * Set a loop to player
+   * * `0` off
+   * * `1` loop single
+   * * `2` loop all
    * @param {Number} op Number of operation
    */
   loop(op) {
@@ -265,3 +266,5 @@ module.exports = class GorilinkPlayer extends EventEmitter {
     return this.node.send({ ...data, op, guildId: this.guild })
   }
 }
+
+module.exports = GorilinkPlayer

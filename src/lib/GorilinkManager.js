@@ -8,9 +8,9 @@ const fetch = require('node-fetch')
  * Main library class in which all events and operations for nodes and players are managed
  * @extends EventEmitter
  */
-module.exports = class GorilinkManager extends EventEmitter {
+class GorilinkManager extends EventEmitter {
   /**
-   * The constructor of the Manager
+   * The constructor of {@link GorilinkManager}
    * @param {Client} client Discord client
    * @param {Array} nodes A Array of options that the {@link GorilinkManager} will connect
    * @param {Object} options The options for the Manager
@@ -27,22 +27,22 @@ module.exports = class GorilinkManager extends EventEmitter {
     this.client = client
 
     /**
-     * A [**Collection**](https://github.com/discordjs/collection) of Lavalink Nodes {@link LavalinkNode}
+     * A [**Collection**](https://github.com/discordjs/collection) of {@link LavalinkNode}
      */
     this.nodes = new Collection()
 
     /**
-     * A [**Collection**](https://github.com/discordjs/collection) of GorilinkPlayer {@link GorilinkPlayer}
+     * A [**Collection**](https://github.com/discordjs/collection) of {@link GorilinkPlayer}
      */
     this.players = new Collection()
 
     /**
-     * A [**Collection**](https://github.com/discordjs/collection) of Voice States
+     * A [**Collection**](https://github.com/discordjs/collection) of [Voice States](https://discord.com/developers/docs/topics/gateway#voice-state-update)
      */
     this.voiceStates = new Collection()
 
     /**
-     * A [**Collection**](https://github.com/discordjs/collection) of Voice Servers
+     * A [**Collection**](https://github.com/discordjs/collection) of [Voice Servers](https://discord.com/developers/docs/topics/gateway#voice-server-update)
      */
     this.voiceServers = new Collection()
 
@@ -206,6 +206,7 @@ module.exports = class GorilinkManager extends EventEmitter {
    * Fetch tracks based on query and a source
    * @param {String} query Query string you want to search
    * @param {String} source Media source
+   * @returns {Promise}
    */
   async fetchTracks(query, source) {
     const node = this.idealNodes[0]
@@ -235,3 +236,5 @@ module.exports = class GorilinkManager extends EventEmitter {
     return guild.shard.send(data)
   }
 }
+
+module.exports = GorilinkManager

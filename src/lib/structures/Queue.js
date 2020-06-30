@@ -2,7 +2,7 @@
  * Represents a play queue
  * @extends Array
  */
-module.exports = class Queue extends Array {
+class Queue extends Array {
   constructor () { super() }
 
   /**
@@ -43,3 +43,5 @@ module.exports = class Queue extends Array {
    */
   remove (index) { return this.splice(index, 1)[0] }
 }
+
+module.exports = Queue

@@ -1,0 +1,32 @@
+name: Generates Jsdocs and Deploy 
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Run eslint
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install packages and Generate docs
+        run: |
+          yarn install
+          yarn jsdoc
+
+      - name: Deploy to GitHub pages
+          uses: JamesIves/github-pages-deploy-action@releases/v3
+          with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            BRANCH: docs
+            FOLDER: out
+

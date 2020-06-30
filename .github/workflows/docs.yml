@@ -1,4 +1,4 @@
-name: Generates Jsdocs and Deploy 
+name: Docs
 
 on:
   push:

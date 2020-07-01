@@ -1,25 +1,43 @@
-![alt text](https://i.imgur.com/U4niq5L.png "Gorilink")
-[![Version](https://badgen.net/npm/v/gorilink)](https://www.npmjs.com/package/gorilink)
-![License](https://badgen.net/github/license/micromatch/micromatch)
+<p align="center">
+  <img src="https://i.imgur.com/U4niq5L.png" />
+</p>
+<p align="center">
+  <a href="LICENSE.md"><img src="https://badgen.net/github/license/amio/badgen-service" /></a>
+  <a href="https://www.npmjs.com/package/gorilink"><img src="https://badgen.net/npm/v/gorilink"></a>
+</p>
 
-[![NPM](https://nodei.co/npm/gorilink.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/gorilink/)
+## 
 
+<p align="center">
+  <a href="https://nodei.co/npm/gorilink/"><img src="https://nodei.co/npm/gorilink.png?downloads=true&downloadRank=true&stars=true"></a>
+</p>
 
-## Easy lavalink wrapper for Discord.js. (soon Eris)
+## Table of contents
 
-# Documentation
-Documentation soon...
+- [Documentation](https://gorillas-team.github.io/Gorilink/)
+- [Installation](#installation)
+- [About](#about)
+- [Example](#example-usage-basic-bot)
 
-# How to install
-### Using yarn:
-**`yarn add gorilink`**
-### Using npm:
-**`npm install gorilink`**
+# Installation
+```
+// Using npm
+npm install gorilink
 
-# How to use
-You need have [Lavalink](https://github.com/Frederikam/Lavalink) node instance.
+// Using yarn
+yarn add gorilink
+```
 
-## Example
+# About
+To use you need a configured [Lavalink](https://github.com/Frederikam/Lavalink) instance.
+
+- Performant
+- 100% Compatible with Lavalink
+- Easy to use
+- Events Based
+- 100% Customizable
+
+## Example usage basic bot
 ```javascript
 // Importing Discord.js Client
 const { Client } = require('discord.js')
@@ -89,3 +107,6 @@ client.on('message', async (message) => {
 // Logging the bot
 client.login('your-token')
 ```
+
+## Help
+If you do not understand something in the documentation or have any questions, please join our [Gorillas's Team Discord server](https://discord.gg/my3p2b)

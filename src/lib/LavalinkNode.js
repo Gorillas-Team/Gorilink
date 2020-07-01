@@ -134,6 +134,11 @@ class LavalinkNode {
 
     if (this.resumeKey) this.configureResuming(this.resumeKey)
 
+    /**
+     * Lavalink node connect event
+     * @event GorilinkManager#nodeConnect
+     * @type {LavalinkNode}
+     */
     this.manager.emit('nodeConnect', this)
     this.connected = true
   }
@@ -166,6 +171,13 @@ class LavalinkNode {
    * @param event WebSocket event data
    */
   onClose(event) {
+    /**
+     * Lavalink node close event
+     * @event GorilinkManager#nodeClose
+     * @type {Object}
+     * @property {Object} event - WebSocket event
+     * @property {LavalinkNode} node - Closed lavalink node
+     */
     this.manager.emit('nodeClose', { event, node: this })
 
     if (event.code != null || event.reason != 'destroy') return this.reconnect()
@@ -180,6 +192,13 @@ class LavalinkNode {
 
     if (!event) return
 
+    /**
+     * Lavalink node error event
+     * @event GorilinkManager#nodeError
+     * @type {Object}
+     * @property {LavalinkNode} node - Node on which the error occurred
+     * @property {Object} err - Error stack
+     */
     this.manager.emit('nodeError', { node: this, err })
 
     return this.reconnect()
@@ -194,6 +213,11 @@ class LavalinkNode {
       this.ws.removeAllListeners()
       this.ws = null
 
+      /**
+       * Emitted when trying to reconnect with the lavalink node
+       * @event GorilinkManager#nodeReconnect
+       * @type {LavalinkNode}
+       */
       this.manager.emit('nodeReconnect', this)
       this.connect()
 

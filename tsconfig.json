@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "declaration": false,
+    "removeComments": false,
+    "alwaysStrict": true,
+    "pretty": false,
+    "module": "commonjs",
+    "target": "es2019",
+    "sourceMap": false,
+    "skipDefaultLibCheck": true
+  }
+}

@@ -41,7 +41,7 @@ class GorilinkPlayer extends EventEmitter {
      * Player textChannel
      * @type {?TextChannel}
      */
-    this.textChannel = options.textChannel
+    this.textChannel = options.textChannel || null
 
     /**
      * Player states
@@ -206,9 +206,23 @@ class GorilinkPlayer extends EventEmitter {
   getEvent(data) {
     const events = {
       'TrackStartEvent': function () {
+        /**
+         * Emitted when the player track starts
+         * @event GorilinkManager#trackStart
+         * @type {Object}
+         * @property {GorilinkPlayer} player - Player started to play
+         * @property {Object} track - Track data
+         */
         this.manager.emit('trackStart', { player: this, track: this.track })
       },
       'TrackEndEvent': function () {
+        /**
+         * Emitted when the player track ends
+         * @event GorilinkManager#trackEnd
+         * @type {Object}
+         * @property {GorilinkManager} player - Player ended the track
+         * @property {Object} track - Track data
+         */
         if (this.track && this.looped == 1) {
           this.manager.emit('trackEnd', { player: this, track: this.track })
           return this.play()
@@ -230,10 +244,26 @@ class GorilinkPlayer extends EventEmitter {
       },
       'TrackStuckEvent': function () {
         this.queue.shift()
+        /**
+         * Emitted when events TrackStuckEvent comes from Lavalink node
+         * @event GorilinkManager#trackStuck
+         * @type {Object}
+         * @property {GorilinkPlayer} player - Player who emitted the event
+         * @property {Object} track - Track data
+         * @property {Object} data - Lavalink node packet data
+         */
         this.manager.emit('trackStuck', { player: this, track: this.track, data })
       },
       'TrackExceptionEvent': function () {
         this.queue.shift()
+        /**
+         * Emitted when events on a track received an error
+         * @event GorilinkManager#trackError
+         * @type {Object}
+         * @property {GorilinkPlayer} player - Player who error as ocurred
+         * @property {Object} track - Track data
+         * @property {Object} data - Lavalink node packet data
+         */
         this.manager.emit('trackError', { player: this, track: this.track, data })
       },
       'WebSocketClosedEvent': function () {
@@ -248,6 +278,14 @@ class GorilinkPlayer extends EventEmitter {
             },
           })
         }
+
+        /**
+         * Emitted when events TrackStuckEvent comes from Lavalink node
+         * @event GorilinkManager#socketClosed
+         * @type {Object}
+         * @property {GorilinkPlayer} player - Player in which the connection to the Discord was closed
+         * @property {Object} data - Lavalink node packet data
+         */
         this.manager.emit('socketClosed', { player: this, data })
       },
       'default': function () { throw new Error(`Unknown event '${data}'.`) }

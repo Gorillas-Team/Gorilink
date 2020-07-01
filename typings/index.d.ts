@@ -1,10 +1,11 @@
 declare module 'gorilink' {
-  import { EventEmitter } from 'events'
+  import {EventEmitter} from 'events'
   import Collection from '@discordjs/collection'
   import * as WebSocket from 'ws'
 
   export class GorilinkManager extends EventEmitter {
     constructor(client: any, nodes: INodeOptions[], options?: IGorilinkOptions)
+
     public readonly client: any
     public readonly nodes: Collection<string, LavalinkNode>
     public readonly players: Collection<string, GorilinkPlayer>
@@ -15,27 +16,31 @@ declare module 'gorilink' {
     public readonly Player: GorilinkPlayer
 
     public on(event: 'nodeConnect' | 'nodeReconnect', listener: (node: LavalinkNode) => void): this
-    public on(event: 'nodeClose', listener: ({ event: any, node: LavalinkNode }) => void): this
-    public on(event: 'nodeError', listener: ({ node: LavalinkNode, err: any }) => void): this
-    public on(event: 'trackStart' | 'trackEnd', listener: ({ player: GorilinkPlayer, track: ITrack }) => void): this
-    public on(event: 'trackStuck' | 'trackError', listener: ({ player: GorilinkPlayer, track: ITrack, data: any}) => void): this
-    public on(event: 'socketClosed', listener: ({ player: GorilinkPlayer, data: any }) => void): this
+    public on(event: 'nodeClose', listener: (event: any, node: LavalinkNode) => void): this
+    public on(event: 'nodeError', listener: (node: LavalinkNode, err: any) => void): this
+    public on(event: 'trackStart' | 'trackEnd', listener: (player: GorilinkPlayer, track: ITrack) => void): this
+    public on(event: 'trackStuck' | 'trackError', listener: (player: GorilinkPlayer, track: ITrack, data: any) => void): this
+    public on(event: 'socketClosed', listener: (player: GorilinkPlayer, data: any) => void): this
 
     public once(event: 'nodeConnect' | 'nodeReconnect', listener: (node: LavalinkNode) => void): this
-    public once(event: 'nodeClose', listener: ({ event: any, node: LavalinkNode }) => void): this
-    public once(event: 'nodeError', listener: ({ node: LavalinkNode, err: any }) => void): this
-    public once(event: 'trackStart' | 'trackEnd', listener: ({ player: GorilinkPlayer, track: ITrack }) => void): this
-    public once(event: 'trackStuck' | 'trackError', listener: ({ player: GorilinkPlayer, track: ITrack, data: any}) => void): this
-    public once(event: 'socketClosed', listener: ({ player: GorilinkPlayer, data: any }) => void): this
+    public once(event: 'nodeClose', listener: (event: any, node: LavalinkNode) => void): this
+    public once(event: 'nodeError', listener: (node: LavalinkNode, err: any) => void): this
+    public once(event: 'trackStart' | 'trackEnd', listener: (player: GorilinkPlayer, track: ITrack) => void): this
+    public once(event: 'trackStuck' | 'trackError', listener: (player: GorilinkPlayer, track: ITrack, data: any) => void): this
+    public once(event: 'socketClosed', listener: (player: GorilinkPlayer, data: any) => void): this
 
     public join(data: IJoingData, options?: IJoingOptions): GorilinkPlayer
+
     public leave(guild: string): GorilinkPlayer
+
     public idealNodes(): LavalinkNode
+
     public fetchTracks(query: string, source?: string): ISearchResult
   }
 
   export class GorilinkPlayer extends EventEmitter {
     constructor(node: LavalinkNode, options: IPlayerOptions, manager: GorilinkManager)
+
     public readonly manager: GorilinkManager
     public readonly node: LavalinkNode
     public readonly guild: any
@@ -52,17 +57,25 @@ declare module 'gorilink' {
     public readonly queue: Queue
 
     public play(track: ITrack, options?: IPlayOptions): void
+
     public stop(): void
+
     public pause(pause: boolean): void
+
     public volume(volume: number): void
+
     public seek(position: number): void
+
     public loop(op: number): number
+
     public setEQ(bands: IBand[]): void
+
     public destroy(): GorilinkPlayer
   }
 
   export class LavalinkNode {
     constructor(manager: GorilinkManager, options?: INodeOptions)
+
     public readonly manager: GorilinkManager
     public readonly tag: string
     public readonly host: string
@@ -77,15 +90,21 @@ declare module 'gorilink' {
     public readonly connected: boolean
 
     public reconnect(): void
+
     public destroy(): boolean
   }
 
   export class Queue {
     public duration(): number
+
     public empty(): boolean
+
     public first(): ITrack
+
     public add(prop: ITrack): number
+
     public removeFirst(): ITrack
+
     public remove(): ITrack
   }
 

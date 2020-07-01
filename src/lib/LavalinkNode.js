@@ -174,11 +174,10 @@ class LavalinkNode {
     /**
      * Lavalink node close event
      * @event GorilinkManager#nodeClose
-     * @type {Object}
      * @property {Object} event - WebSocket event
      * @property {LavalinkNode} node - Closed lavalink node
      */
-    this.manager.emit('nodeClose', { event, node: this })
+    this.manager.emit('nodeClose', event, this)
 
     if (event.code != null || event.reason != 'destroy') return this.reconnect()
   }
@@ -195,11 +194,10 @@ class LavalinkNode {
     /**
      * Lavalink node error event
      * @event GorilinkManager#nodeError
-     * @type {Object}
      * @property {LavalinkNode} node - Node on which the error occurred
      * @property {Object} err - Error stack
      */
-    this.manager.emit('nodeError', { node: this, err })
+    this.manager.emit('nodeError', this, err)
 
     return this.reconnect()
   }
@@ -273,7 +271,7 @@ class LavalinkNode {
    * @param data data to send
    */
   async _send(data) {
-    return await this.ws.send(data, err => {
+    await this.ws.send(data, err => {
       if (err) throw err
     })
   }

@@ -169,7 +169,7 @@ class GorilinkPlayer extends EventEmitter {
    * @param {Number} op Number of operation
    */
   loop(op) {
-    if(op >= 2 && op <= 0 && !isNaN(op)) throw Error('Invalid op.')
+    if (op >= 2 && op <= 0 && !isNaN(op)) throw Error('Invalid op.')
     return this.looped = op
   }
 

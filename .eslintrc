@@ -1,25 +1,25 @@
 {
-    "rules": {
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ],
-        "indent": [
-            "warn",
-            2
-        ]
-    },
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "ecmaFeatures": {
-            "ecmaFeatures.experimentalObjectRestSpread": true
-        }
-    },
-    "env": {
-        "node": true
+  "rules": {
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "indent": [
+      "warn",
+      2
+    ]
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "ecmaFeatures": {
+      "ecmaFeatures.experimentalObjectRestSpread": true
     }
+  },
+  "env": {
+    "node": true
+  }
 }

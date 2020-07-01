@@ -246,7 +246,7 @@ class LavalinkNode {
    * Flushs the send queue
    */
   async _queueFlush() {
-    if(this._queue.length == 0) return
+    if (this._queue.length == 0) return
 
     await this._queue.map(this._send.bind(this))
 

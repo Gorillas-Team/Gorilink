@@ -39,9 +39,9 @@ client.on('message', async (message) => {
   if (cmd === 'play') {
     // Tries to get the voice channel
     const memberChannel = message.member.voice.channel.id
-    
+
     // Checks if the member is on a voice channel
-    if(!memberChannel) return message.channel.send('You are not on a voice channel')
+    if (!memberChannel) return message.channel.send('You are not on a voice channel')
 
     // Spawning lavalink player
     const player = await client.music.join({
@@ -57,7 +57,7 @@ client.on('message', async (message) => {
     player.queue.add(tracks[0])
 
     message.channel.send('Added in queue: ' + tracks[0].info.title)
-    
+
     // Playing
     if (!player.playing) return player.play()
   }

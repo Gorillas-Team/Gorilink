@@ -23,8 +23,8 @@ client.on('ready', async () => {
     .on('nodeConnect', node => {
       console.log(`${node.tag || node.host} - Lavalink connected with success.`)
     })
-    .on('trackStart', event => {
-      event.player.textChannel.send(`Now playing \`${event.track.info.title}\``)
+    .on('trackStart', (player, track) => {
+      player.textChannel.send(`Now playing \`${track.info.title}\``)
     })
 
   console.log('Online on the client', client.user.username)
@@ -41,7 +41,7 @@ client.on('message', async (message) => {
     const memberChannel = message.member.voice.channel.id
 
     // Checks if the member is on a voice channel
-    if (!memberChannel) return message.channel.send('You are not on a voice channel')
+    if(!memberChannel) return message.channel.send('You are not on a voice channel')
 
     // Spawning lavalink player
     const player = await client.music.join({

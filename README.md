@@ -6,7 +6,7 @@
   <a href="https://www.npmjs.com/package/gorilink"><img src="https://badgen.net/npm/v/gorilink"></a>
 </p>
 
-## 
+##
 
 <p align="center">
   <a href="https://nodei.co/npm/gorilink/"><img src="https://nodei.co/npm/gorilink.png?downloads=true&downloadRank=true&stars=true"></a>
@@ -64,8 +64,8 @@ client.on('ready', async () => {
     .on('nodeConnect', node => {
       console.log(`${node.tag || node.host} - Lavalink connected with success.`)
     })
-    .on('trackStart', event => {
-      event.player.textChannel.send(`Now playing \`${event.track.info.title}\``)
+    .on('trackStart', (player, track) => {
+      player.textChannel.send(`Now playing \`${track.info.title}\``)
     })
 
   console.log('Online on the client', client.user.username)
@@ -80,7 +80,7 @@ client.on('message', async (message) => {
   if (cmd === 'play') {
     // Tries to get the voice channel
     const memberChannel = message.member.voice.channel.id
-    
+
     // Checks if the member is on a voice channel
     if(!memberChannel) return message.channel.send('You are not on a voice channel')
 
@@ -98,7 +98,7 @@ client.on('message', async (message) => {
     player.queue.add(tracks[0])
 
     message.channel.send('Added in queue: ' + tracks[0].info.title)
-    
+
     // Playing
     if (!player.playing) return player.play()
   }

@@ -232,6 +232,11 @@ class GorilinkPlayer extends EventEmitter {
           this.queue.shift()
           this.playing = false
           if (['REPLACED', 'FINISHED', 'STOPPED'].includes(data.reason)) {
+            /**
+             * Emitted when the player queue ends
+             * @event GorilinkManager#queueEnd
+             * @property {GorilinkManager} player - Player where the queue ended
+             */
             this.manager.emit('queueEnd', this)
           }
         } else if (this.queue.length > 0) {

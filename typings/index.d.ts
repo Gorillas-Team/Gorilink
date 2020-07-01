@@ -17,7 +17,7 @@ declare module 'Gorilink' {
     public join(data: IJoingData, options?: IJoingOptions): GorilinkPlayer
     public leave(guild: string): GorilinkPlayer
     public idealNodes(): LavalinkNode
-    public fetchTracks(query: string, source?: string): ISeachResult
+    public fetchTracks(query: string, source?: string): ISearchResult
   }
 
   export class GorilinkPlayer extends EventEmitter {
@@ -27,7 +27,7 @@ declare module 'Gorilink' {
     public readonly guild: any | string
     public readonly voiceChannel: any | string
     public readonly textChannel: any | string
-    public readonly state: object
+    public readonly state: IPlayerState
     public readonly playing: boolean
     public readonly timestamp: any | number
     public readonly paused: boolean
@@ -100,7 +100,7 @@ declare module 'Gorilink' {
     readonly selfDeaf: boolean
   }
 
-  export interface ISeachResult {
+  export interface ISearchResult {
     readonly playlistInfo: object
     readonly loadType: string
     readonly tracks: ITrack[]

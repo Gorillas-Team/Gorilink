@@ -169,7 +169,7 @@ class GorilinkPlayer extends EventEmitter {
    * @param {Number} op Number of operation
    */
   loop(op) {
-    if(op >= 2 && op <= 0 && !isNaN(op)) throw Error('Invalid op.')
+    if (op >= 2 && op <= 0 && !isNaN(op)) throw Error('Invalid op.')
     return this.looped = op
   }
 
@@ -232,6 +232,11 @@ class GorilinkPlayer extends EventEmitter {
           this.queue.shift()
           this.playing = false
           if (['REPLACED', 'FINISHED', 'STOPPED'].includes(data.reason)) {
+            /**
+             * Emitted when the player queue ends
+             * @event GorilinkManager#queueEnd
+             * @property {GorilinkManager} player - Player where the queue ended
+             */
             this.manager.emit('queueEnd', this)
           }
         } else if (this.queue.length > 0) {

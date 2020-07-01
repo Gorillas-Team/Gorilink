@@ -246,7 +246,7 @@ class LavalinkNode {
    * Flushs the send queue
    */
   async _queueFlush() {
-    if(this._queue.length == 0) return
+    if (this._queue.length == 0) return
 
     await this._queue.map(this._send.bind(this))
 
@@ -259,8 +259,7 @@ class LavalinkNode {
    */
   send(data) {
     const packet = JSON.stringify(data)
-
-    console.log(this.connected)
+    
     if (!this.connected) return this._queue.push(packet)
 
     return this._send(packet)
@@ -270,8 +269,8 @@ class LavalinkNode {
    * Sends data to the Lavalink Websocket
    * @param data data to send
    */
-  async _send(data) {
-    await this.ws.send(data, err => {
+  _send(data) {
+    this.ws.send(data, err => {
       if (err) throw err
     })
   }

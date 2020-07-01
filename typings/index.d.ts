@@ -1,4 +1,4 @@
-declare module 'Gorilink' {
+declare module 'gorilink' {
   import { EventEmitter } from 'events'
   import Collection from '@discordjs/collection'
   import * as WebSocket from 'ws'
@@ -8,11 +8,11 @@ declare module 'Gorilink' {
     public readonly client: any
     public readonly nodes: Collection<string, LavalinkNode>
     public readonly players: Collection<string, GorilinkPlayer>
-    public readonly voiceStates: Collection<string, object>
-    public readonly voiceServers: Collection<string, object>
+    public readonly voiceStates: Collection<string, IVoiceStateUpdate>
+    public readonly voiceServers: Collection<string, IVoiceServerUpdate>
     public readonly user: string
     public readonly shards: number
-    public readonly Player: any | GorilinkPlayer
+    public readonly Player: GorilinkPlayer
 
     public join(data: IJoingData, options?: IJoingOptions): GorilinkPlayer
     public leave(guild: string): GorilinkPlayer
@@ -24,20 +24,20 @@ declare module 'Gorilink' {
     constructor(node: LavalinkNode, options: IPlayerOptions, manager: GorilinkManager)
     public readonly manager: GorilinkManager
     public readonly node: LavalinkNode
-    public readonly guild: any | string
-    public readonly voiceChannel: any | string
-    public readonly textChannel: any | string
+    public readonly guild: any
+    public readonly voiceChannel: any
+    public readonly textChannel: any
     public readonly state: IPlayerState
     public readonly playing: boolean
-    public readonly timestamp: any | number
+    public readonly timestamp: number
     public readonly paused: boolean
     public readonly track: ITrack
-    public readonly voiceUpdateState: any | object
+    public readonly voiceUpdateState: any
     public readonly looped: number
     public readonly position: number
     public readonly queue: Queue
 
-    public play(track: ITrack, options?: any | object): void
+    public play(track: ITrack, options?: IPlayOptions): void
     public stop(): void
     public pause(pause: boolean): void
     public volume(volume: number): void
@@ -56,7 +56,7 @@ declare module 'Gorilink' {
     public readonly password: string
     public readonly ws: WebSocket
     public readonly reconnectInterval: number
-    public readonly resumeKey: string | any
+    public readonly resumeKey: string
     public readonly _resumeTimeout: number
     public readonly _queue: []
     public readonly stats: INodeStats
@@ -90,6 +90,18 @@ declare module 'Gorilink' {
     readonly Player?: GorilinkPlayer
   }
 
+  export interface IVoiceStateUpdate {
+    readonly token: string
+    readonly guild_id: string
+    readonly endpoint: string
+  }
+
+  export interface IVoiceServerUpdate {
+    readonly token: string
+    readonly guild_id: string
+    readonly endpoint: string
+  }
+
   export interface IJoingData {
     readonly guild: string
     readonly voiceChannel: string
@@ -101,9 +113,14 @@ declare module 'Gorilink' {
   }
 
   export interface ISearchResult {
-    readonly playlistInfo: object
+    readonly playlistInfo: IPlaylistInfo
     readonly loadType: string
     readonly tracks: ITrack[]
+  }
+
+  export interface IPlaylistInfo {
+    readonly selectedTrack: number
+    readonly name: string
   }
 
   export interface ITrack {
@@ -123,9 +140,9 @@ declare module 'Gorilink' {
   }
 
   export interface IPlayerOptions {
-    readonly guild: any | string
-    readonly voiceChannel: any | string
-    readonly textChannel?: any | string
+    readonly guild: any
+    readonly voiceChannel: any
+    readonly textChannel?: any
   }
 
   export interface IPlayerState {
@@ -136,6 +153,12 @@ declare module 'Gorilink' {
   export interface IBand {
     readonly band: number
     readonly gain: number
+  }
+
+  export interface IPlayOptions {
+    readonly startTime?: number
+    readonly endTime?: number
+    readonly noReplace?: boolean
   }
 
   export interface INodeStats {

@@ -93,7 +93,7 @@ declare module 'gorilink' {
     readonly tag?: string
     readonly host: string
     readonly port: number
-    readonly password: number
+    readonly password: string
     readonly resumeKey?: string
     readonly resumeTimeout?: number
     readonly reconnectInterval?: number

@@ -1,4 +1,4 @@
-import * as Gorilink from '../src'
+import Gorilink from '../src'
 
 export default Gorilink
 

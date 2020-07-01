@@ -21,11 +21,14 @@
     "url": "https://github.com/Gorillas-Team/Gorilink/issues"
   },
   "devDependencies": {
+    "@types/node": "^14.0.14",
+    "@types/ws": "^7.2.6",
     "discord.js": "^12.2.0",
     "eslint": "^6.8.0",
     "jsdoc": "^3.6.4",
     "jsdoc-template": "https://github.com/braintree/jsdoc-template",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.3",
+    "typescript": "^3.9.5"
   },
   "dependencies": {
     "@discordjs/collection": "^0.1.5",

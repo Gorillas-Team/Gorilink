@@ -41,7 +41,7 @@ class GorilinkPlayer extends EventEmitter {
      * Player textChannel
      * @type {?TextChannel}
      */
-    this.textChannel = options.textChannel
+    this.textChannel = options.textChannel || null
 
     /**
      * Player states

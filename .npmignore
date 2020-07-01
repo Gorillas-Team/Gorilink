@@ -1,0 +1,6 @@
+.eslintrc
+.gitignore
+.github/
+.editorconfig
+.jsdocs.json
+tsconfig.json

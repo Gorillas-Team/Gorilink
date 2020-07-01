@@ -1,9 +1,16 @@
-![alt text](https://i.imgur.com/U4niq5L.png "Gorilink")
-[![Version](https://badgen.net/npm/v/gorilink)](https://www.npmjs.com/package/gorilink)
-![License](https://badgen.net/github/license/amio/badgen-service)
+<p align="center">
+  <img src="https://i.imgur.com/U4niq5L.png" />
+</p>
+<p align="center">
+  <a href="LICENSE.md"><img src="https://badgen.net/github/license/amio/badgen-service" /></a>
+  <a href="https://www.npmjs.com/package/gorilink"><img src="https://badgen.net/npm/v/gorilink"></a>
+</p>
 
-[![NPM](https://nodei.co/npm/gorilink.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/gorilink/)
+## 
 
+<p align="center">
+  <a href="https://nodei.co/npm/gorilink/"><img src="https://nodei.co/npm/gorilink.png?downloads=true&downloadRank=true&stars=true"></a>
+</p>
 
 ## Table of contents
 

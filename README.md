@@ -109,4 +109,4 @@ client.login('your-token')
 ```
 
 ## Help
-If you do not understand something in the documentation or have any questions, please join our [Gorillas's Team Discord server](https://discord.gg/my3p2b)
+If you do not understand something in the documentation or have any questions, please join our [Gorillas's Team Discord server](https://discord.gg/t87qh4y)

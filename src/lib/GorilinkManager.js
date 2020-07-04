@@ -92,10 +92,11 @@ class GorilinkManager extends EventEmitter {
   join(data = {}, options = {}) {
     const player = this.players.get(data.guild)
     if (player) return player
+
     this.sendWS({
       op: 4,
       d: {
-        guild_id: data.guild,
+        guild_id: data.guild.id || data.guild,
         channel_id: data.voiceChannel.id || data.voiceChannel,
         self_mute: options.selfMute || false,
         self_deaf: options.selfDeaf || false
@@ -113,7 +114,7 @@ class GorilinkManager extends EventEmitter {
     this.sendWS({
       op: 4,
       d: {
-        guild_id: guild,
+        guild_id: guild.id || guild,
         channel_id: null,
         self_mute: false,
         self_deaf: false
@@ -190,14 +191,18 @@ class GorilinkManager extends EventEmitter {
    * @param {Object} data Guild data
    */
   spawnPlayer(data) {
-    const has = this.nodes.get(data.guild)
+    const guild = data.guild.id || data.guild
+
+    const has = this.nodes.get(guild)
     if (has) return has
+
+    if(this.idealNodes.length === 0) throw Error('No nodes connected')
 
     const node = this.nodes.get(this.idealNodes[0].tag || this.idealNodes[0].host)
     if (!node) throw Error('No nodes avalible')
 
     const player = new this.Player(node, data, this)
-    this.players.set(data.guild, player)
+    this.players.set(guild, player)
 
     return player
   }

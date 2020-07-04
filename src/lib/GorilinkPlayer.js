@@ -29,13 +29,13 @@ class GorilinkPlayer extends EventEmitter {
      * Player guild id
      * @type {String}
      */
-    this.guild = options.guild
+    this.guild = options.guild.id || options.guild
 
     /**
      * Player voiceChannel id
      * @type {String}
      */
-    this.voiceChannel = options.voiceChannel
+    this.voiceChannel = options.voiceChannel.id || options.voiceChannel
 
     /**
      * Player textChannel

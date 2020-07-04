@@ -18,7 +18,7 @@ declare module 'gorilink' {
     public on(event: 'nodeConnect' | 'nodeReconnect', listener: (node: LavalinkNode) => void): this
     public on(event: 'nodeClose', listener: (event: any, node: LavalinkNode) => void): this
     public on(event: 'nodeError', listener: (node: LavalinkNode, err: any) => void): this
-    public on(event: 'queueEnd', listener: (player: GorilinkManager) => void): this
+    public on(event: 'queueEnd', listener: (player: GorilinkPlayer) => void): this
     public on(event: 'trackStart' | 'trackEnd', listener: (player: GorilinkPlayer, track: ITrack) => void): this
     public on(event: 'trackStuck' | 'trackError', listener: (player: GorilinkPlayer, track: ITrack, data: any) => void): this
     public on(event: 'socketClosed', listener: (player: GorilinkPlayer, data: any) => void): this
@@ -26,7 +26,7 @@ declare module 'gorilink' {
     public once(event: 'nodeConnect' | 'nodeReconnect', listener: (node: LavalinkNode) => void): this
     public once(event: 'nodeClose', listener: (event: any, node: LavalinkNode) => void): this
     public once(event: 'nodeError', listener: (node: LavalinkNode, err: any) => void): this
-    public once(event: 'queueEnd', listener: (player: GorilinkManager) => void): this
+    public once(event: 'queueEnd', listener: (player: GorilinkPlayer) => void): this
     public once(event: 'trackStart' | 'trackEnd', listener: (player: GorilinkPlayer, track: ITrack) => void): this
     public once(event: 'trackStuck' | 'trackError', listener: (player: GorilinkPlayer, track: ITrack, data: any) => void): this
     public once(event: 'socketClosed', listener: (player: GorilinkPlayer, data: any) => void): this

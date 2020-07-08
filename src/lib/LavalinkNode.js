@@ -179,7 +179,7 @@ class LavalinkNode {
      */
     this.manager.emit('nodeClose', event, this)
 
-    if (event.code != null || event.reason != 'destroy') return this.reconnect()
+    if (event != 1000) return this.reconnect()
   }
 
   /**
@@ -229,6 +229,7 @@ class LavalinkNode {
   destroy() {
     this.ws.close(1000, 'destroy')
     this.ws = null
+    this.manager.nodes.delete(this.tag || this.host)
 
     return true
   }
@@ -259,7 +260,7 @@ class LavalinkNode {
    */
   send(data) {
     const packet = JSON.stringify(data)
-    
+
     if (!this.connected) return this._queue.push(packet)
 
     return this._send(packet)

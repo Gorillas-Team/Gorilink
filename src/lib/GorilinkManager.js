@@ -90,7 +90,7 @@ class GorilinkManager extends EventEmitter {
    * @returns {GorilinkPlayer} Guild player
    */
   join(data = {}, options = {}) {
-    const player = this.players.get(data.guild)
+    const player = this.players.get(data.guild.id || data.guild)
     if (player) return player
 
     this.sendWS({

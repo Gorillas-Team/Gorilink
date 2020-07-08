@@ -28,7 +28,11 @@ class Queue extends Array {
    * @param {Object} prop Track object
    * @returns {Number} Queue length
    */
-  add(prop) { return this.push({ ...prop, index: this.length + 1 }) }
+  add(prop) {
+    return this.push(Object.defineProperty(prop, 'index', {
+      get: () => this.indexOf(prop)
+    }))
+  }
 
   /**
    * Remove the first item from the Queue

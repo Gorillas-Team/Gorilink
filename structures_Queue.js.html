@@ -121,9 +121,7 @@ class Queue extends Array {
    * @returns {Number} Queue length
    */
   add(prop) {
-    return this.push(Object.defineProperty(prop, 'index', {
-      get: () => this.indexOf(prop)
-    }))
+    return this.push(prop)
   }
 
   /**

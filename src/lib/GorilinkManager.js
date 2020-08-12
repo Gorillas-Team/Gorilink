@@ -122,7 +122,7 @@ class GorilinkManager extends EventEmitter {
     })
 
     const player = this.players.get(guild)
-    if (!player) return
+    if (!player) return false
 
     player.removeAllListeners()
     player.send('destroy')

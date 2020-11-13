@@ -16,20 +16,29 @@ const nodes = [
 // Instantiating discord.js client
 const client = new Client()
 
-client.on('ready', async () => {
-  // Creating GorilinkManager
-  client.music = new GorilinkManager(client, nodes)
-    // Listens events
-    .on('nodeConnect', node => {
-      console.log(`${node.tag || node.host} - Lavalink connected with success.`)
-    })
-    .on('trackStart', (player, track) => {
-      player.textChannel.send(`Now playing \`${track.info.title}\``)
-    })
+client.music = new GorilinkManager(client, nodes, {
+  sendWS: (data) => {
+    const guild = client.guilds.cache.get(data.d.guild_id)
+    if (!guild) return
 
+    return guild.shard.send(data)
+  }
+})
+  // Listens events
+  .on('nodeConnect', node => {
+    console.log(`${node.tag || node.host} - Lavalink connected with success.`)
+  })
+  .on('trackStart', (player, track) => {
+    player.textChannel.send(`Now playing \`${track.title}\``)
+  })
+
+client.on('ready', async () => {
+  // Starting GorilinkManager
+  client.music.start(client.user.id)
   console.log('Online on the client', client.user.username)
 })
 
+client.on('raw', packet => client.music.packetUpdate(packet))
 
 client.on('message', async (message) => {
   const prefix = '!'
@@ -56,7 +65,7 @@ client.on('message', async (message) => {
     // Adding in queue
     player.queue.add(tracks[0])
 
-    message.channel.send('Added in queue: ' + tracks[0].info.title)
+    message.channel.send('Added in queue: ' + tracks[0].title)
 
     // Playing
     if (!player.playing) return player.play()
@@ -64,4 +73,4 @@ client.on('message', async (message) => {
 })
 
 // Logging the bot
-client.login('your-token')
+client.login('YOUR_TOKEN_HERE')

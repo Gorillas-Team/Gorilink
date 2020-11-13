@@ -3,7 +3,7 @@ const WebSocket = require('ws')
 /**
  * Represents a Lavalink node instance
  */
-class LavalinkNode {
+class GorilinkNode {
 
   /**
    * The constructor of the LavalinkNode
@@ -137,7 +137,7 @@ class LavalinkNode {
     /**
      * Lavalink node connect event
      * @event GorilinkManager#nodeConnect
-     * @type {LavalinkNode}
+     * @type {GorilinkNode}
      */
     this.manager.emit('nodeConnect', this)
     this.connected = true
@@ -175,7 +175,7 @@ class LavalinkNode {
      * Lavalink node close event
      * @event GorilinkManager#nodeClose
      * @property {Object} event - WebSocket event
-     * @property {LavalinkNode} node - Closed lavalink node
+     * @property {GorilinkNode} node - Closed lavalink node
      */
     this.manager.emit('nodeClose', event, this)
 
@@ -194,7 +194,7 @@ class LavalinkNode {
     /**
      * Lavalink node error event
      * @event GorilinkManager#nodeError
-     * @property {LavalinkNode} node - Node on which the error occurred
+     * @property {GorilinkNode} node - Node on which the error occurred
      * @property {Object} err - Error stack
      */
     this.manager.emit('nodeError', this, err)
@@ -214,7 +214,7 @@ class LavalinkNode {
       /**
        * Emitted when trying to reconnect with the lavalink node
        * @event GorilinkManager#nodeReconnect
-       * @type {LavalinkNode}
+       * @type {GorilinkNode}
        */
       this.manager.emit('nodeReconnect', this)
       this.connect()
@@ -277,4 +277,4 @@ class LavalinkNode {
   }
 }
 
-module.exports = LavalinkNode
+module.exports = GorilinkNode

@@ -33,8 +33,7 @@ client.music = new GorilinkManager(client, nodes, {
   })
 
 client.on('ready', async () => {
-  // Creating GorilinkManager
-
+  // Starting GorilinkManager
   client.music.start(client.user.id)
   console.log('Online on the client', client.user.username)
 })

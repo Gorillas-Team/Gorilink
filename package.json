@@ -1,19 +1,9 @@
 {
   "name": "gorilink",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "main": "./src/index.js",
   "types": "./typings/index.d.ts",
-  "exports": {
-    ".": [
-      {
-        "require": "./src/index.js",
-        "import": "./esm/gorilink.mjs"
-      },
-      "./src/index.js"
-    ],
-    "./esm": "./esm/gorilink.mjs"
-  },
-  "license": "ISC",
+  "license": "BSD",
   "scripts": {
     "test:ts": "tsc",
     "lint": "eslint src/ examples/",
@@ -37,6 +27,7 @@
     "@types/node": "^14.0.14",
     "@types/ws": "^7.2.6",
     "discord.js": "^12.2.0",
+    "eris": "^0.14.0",
     "eslint": "^6.8.0",
     "jsdoc": "^3.6.4",
     "jsdoc-template": "https://github.com/braintree/jsdoc-template",

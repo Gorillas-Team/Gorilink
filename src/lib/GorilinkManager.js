@@ -1,9 +1,10 @@
 const { EventEmitter } = require('events')
-const LavalinkNode = require('./LavalinkNode')
+const GorilinkNode = require('./GorilinkNode')
 const GorilinkPlayer = require('./GorilinkPlayer')
 const Collection = require('@discordjs/collection')
 
 const fetch = require('node-fetch')
+
 /**
  * Main library class in which all events and operations for nodes and players are managed
  * @extends EventEmitter
@@ -12,7 +13,7 @@ class GorilinkManager extends EventEmitter {
   /**
    * The constructor of {@link GorilinkManager}
    * @param {Client} client Discord client
-   * @param {Array} nodes A Array of options that the {@link GorilinkManager} will connect
+   * @param {Array<GorilinkNode>} nodes A Array of options that the {@link GorilinkManager} will connect
    * @param {Object} options The options for the Manager
    */
   constructor(client, nodes, options = {}) {
@@ -22,12 +23,12 @@ class GorilinkManager extends EventEmitter {
 
     /**
      * Discord Client
-     * @type {Client}
+     * @type {import('eris').Client}
      */
     this.client = client
 
     /**
-     * A [**Collection**](https://github.com/discordjs/collection) of {@link LavalinkNode}
+     * A [**Collection**](https://github.com/discordjs/collection) of {@link GorilinkNode}
      */
     this.nodes = new Collection()
 
@@ -63,7 +64,7 @@ class GorilinkManager extends EventEmitter {
 
     for (const node of nodes) this.createNode(node)
 
-    this.client.on('raw', packet => {
+    this.client.on('rawWS', packet => {
       if (packet.t == 'VOICE_SERVER_UPDATE') this.voiceServersUpdate(packet.d)
       if (packet.t == 'VOICE_STATE_UPDATE') this.voiceStateUpdate(packet.d)
     })
@@ -72,10 +73,10 @@ class GorilinkManager extends EventEmitter {
   /**
    * Creates a node instance
    * @param {Object} options Options of the lavalink node
-   * @returns {LavalinkNode} Lavalink node
+   * @returns {GorilinkNode} Lavalink node
    */
   createNode(options) {
-    const node = new LavalinkNode(this, options)
+    const node = new GorilinkNode(this, options)
     this.nodes.set(options.tag || options.host, node)
 
     node.connect()
@@ -232,13 +233,13 @@ class GorilinkManager extends EventEmitter {
 
   /**
    * Send to discord WebSocket packets
-   * @param {Object} data Discord packet data
+   * @param {RawPacket} data Discord packet data
    */
   sendWS(data) {
-    const guild = this.client.guilds.cache.get(data.d.guild_id)
+    const guild = this.client.guilds.get(data.d.guild_id)
     if (!guild) return
 
-    return guild.shard.send(data)
+    return guild.shard.ws.send(JSON.stringify(data))
   }
 }
 

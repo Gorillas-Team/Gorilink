@@ -1,4 +1,4 @@
-import Gorilink from '../src'
+import Gorilink from '../src/index.js'
 
 export default Gorilink
 

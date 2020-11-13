@@ -8,7 +8,7 @@ const Queue = require('./structures/Queue')
 class GorilinkPlayer extends EventEmitter {
   /**
    * The constructor of GorilinkPlayer
-   * @param {LavalinkNode} node Your node instance
+   * @param {GorilinkNode} node Your node instance
    * @param {Object} options Player options
    * @param {GorilinkManager} manager Your GorilinkManager instance
    */
@@ -21,19 +21,19 @@ class GorilinkPlayer extends EventEmitter {
     this.manager = manager
 
     /**
-     * {@link LavalinkNode} instance
+     * {@link GorilinkNode} instance
      */
     this.node = node
 
     /**
      * Player guild id
-     * @type {String}
+     * @type {String | Guild}
      */
     this.guild = options.guild.id || options.guild
 
     /**
      * Player voiceChannel id
-     * @type {String}
+     * @type {String | VoiceChannel}
      */
     this.voiceChannel = options.voiceChannel.id || options.voiceChannel
 

@@ -1,7 +1,7 @@
 // Importing Discord.js Client
-const { Client } = require('discord.js')
+const { Client } = require('eris')
 // Importing GorilinkManager
-const { GorilinkManager } = require('gorilink')
+const { GorilinkManager } = require('../src')
 
 // Your lavalink node config
 const nodes = [
@@ -14,7 +14,7 @@ const nodes = [
 ]
 
 // Instantiating discord.js client
-const client = new Client()
+const client = new Client('NjYwMzc4NjA5MDg0NzkyODUy.Xgb_gQ.f2A78SyDyu8nmVj-WZXlynFl2yw')
 
 client.on('ready', async () => {
   // Creating GorilinkManager
@@ -24,28 +24,30 @@ client.on('ready', async () => {
       console.log(`${node.tag || node.host} - Lavalink connected with success.`)
     })
     .on('trackStart', (player, track) => {
-      player.textChannel.send(`Now playing \`${track.info.title}\``)
+      player.textChannel.createMessage(`Now playing \`${track.info.title}\``)
     })
 
   console.log('Online on the client', client.user.username)
 })
 
 
-client.on('message', async (message) => {
+client.on('messageCreate', async (message) => {
   const prefix = '!'
   const args = message.content.slice(prefix.length).trim().split(/ +/g)
   const cmd = args.shift().toLowerCase()
 
   if (cmd === 'play') {
     // Tries to get the voice channel
-    const memberChannel = message.member.voice.channel.id
+    const memberChannel = message.member.voiceState.channelID
 
     // Checks if the member is on a voice channel
-    if(!memberChannel) return message.channel.send('You are not on a voice channel')
+    if(!memberChannel) return message.channel.createMessage('You are not on a voice channel')
+
+
 
     // Spawning lavalink player
     const player = await client.music.join({
-      guild: message.guild.id,
+      guild: message.guildID,
       voiceChannel: memberChannel,
       textChannel: message.channel
     })
@@ -56,7 +58,7 @@ client.on('message', async (message) => {
     // Adding in queue
     player.queue.add(tracks[0])
 
-    message.channel.send('Added in queue: ' + tracks[0].info.title)
+    message.channel.createMessage('Added in queue: ' + tracks[0].info.title)
 
     // Playing
     if (!player.playing) return player.play()
@@ -64,4 +66,4 @@ client.on('message', async (message) => {
 })
 
 // Logging the bot
-client.login('your-token')
+client.connect()

@@ -1,5 +1,6 @@
 const { EventEmitter } = require('events')
 const GorilinkNode = require('./GorilinkNode')
+const SearchResponse = require('./model/SearchResponse')
 const GorilinkPlayer = require('./GorilinkPlayer')
 const Collection = require('@discordjs/collection')
 
@@ -13,8 +14,8 @@ class GorilinkManager extends EventEmitter {
   /**
    * The constructor of {@link GorilinkManager}
    * @param {Client} client Discord client
-   * @param {Array<GorilinkNode>} nodes A Array of options that the {@link GorilinkManager} will connect
-   * @param {Object} options The options for the Manager
+   * @param {GorilinkNode[]} nodes A Array of options that the {@link GorilinkManager} will connect
+   * @param {object} options The options for the Manager
    */
   constructor(client, nodes, options = {}) {
     super()
@@ -23,9 +24,13 @@ class GorilinkManager extends EventEmitter {
 
     /**
      * Discord Client
-     * @type {import('eris').Client}
      */
     this.client = client
+
+    /**
+     * @private
+     */
+    this._nodes = nodes
 
     /**
      * A [**Collection**](https://github.com/discordjs/collection) of {@link GorilinkNode}
@@ -50,7 +55,7 @@ class GorilinkManager extends EventEmitter {
     /**
      * Discord Client user id
      */
-    this.user = options.user || client.user.id
+    this.user = null
 
     /**
      * Total of Discord Client  shards
@@ -62,17 +67,16 @@ class GorilinkManager extends EventEmitter {
      */
     this.Player = options.Player || GorilinkPlayer
 
-    for (const node of nodes) this.createNode(node)
-
-    this.client.on('rawWS', packet => {
-      if (packet.t == 'VOICE_SERVER_UPDATE') this.voiceServersUpdate(packet.d)
-      if (packet.t == 'VOICE_STATE_UPDATE') this.voiceStateUpdate(packet.d)
-    })
+    /**
+     * Sets Discord WebSocket send method
+     * @type {function}
+     */
+    this.sendWS = options.sendWS
   }
 
   /**
    * Creates a node instance
-   * @param {Object} options Options of the lavalink node
+   * @param {object} options Options of the lavalink node
    * @returns {GorilinkNode} Lavalink node
    */
   createNode(options) {
@@ -86,8 +90,8 @@ class GorilinkManager extends EventEmitter {
 
   /**
    * Joins on guild channel
-   * @param {Object} data Guild and voice channel data
-   * @param {Object} options Self mute and self deaf options
+   * @param {IJoinData} data Guild and voice channel data
+   * @param {IJoinOptions} options Self mute and self deaf options
    * @returns {GorilinkPlayer} Guild player
    */
   join(data = {}, options = {}) {
@@ -107,8 +111,17 @@ class GorilinkManager extends EventEmitter {
   }
 
   /**
+   * Set user id
+   * @param {string} id
+   */
+  start(id) {
+    this.user = id
+    for (const node of this._nodes) this.createNode(node)
+  }
+
+  /**
    * Leave from voice channel of the guild
-   * @param {String} guild Guild id you want to leave
+   * @param {string} guild Guild id you want to leave
    * @returns {GorilinkPlayer} Deleted player
    */
   leave(guild) {
@@ -133,7 +146,7 @@ class GorilinkManager extends EventEmitter {
 
   /**
    * For handling voiceServerUpdate
-   * @param {Object} data The data directly from discord
+   * @param {object} data The data directly from discord
    */
   voiceServersUpdate(data) {
     this.voiceServers.set(data.guild_id, data)
@@ -142,7 +155,7 @@ class GorilinkManager extends EventEmitter {
 
   /**
    * For handling voiceStateUpdate
-   * @param {Object} data The data directly from discord
+   * @param {object} data The data directly from discord
    */
   voiceStateUpdate(data) {
     if (data.user_id != this.user) return
@@ -157,9 +170,21 @@ class GorilinkManager extends EventEmitter {
   }
 
   /**
+   * Updates manager states
+   * @param {} packet
+   */
+  packetUpdate(packet) {
+    if (packet.t == 'VOICE_SERVER_UPDATE') this.voiceServersUpdate(packet.d)
+    if (packet.t == 'VOICE_STATE_UPDATE') this.voiceStateUpdate(packet.d)
+    if (packet.t == 'GUILD_CREATE') {
+      for (const state of packet.d.voice_states) this.voiceStateUpdate({ ...state, guild_id: packet.d.id })
+    }
+  }
+
+  /**
    * Handles the data of voiceServerUpdate & voiceStateUpdate to see if a connection
    * is possible with the data we have and if it is then make the connection to lavalink
-   * @param {String} guildId The guild id that we're trying to attempt to connect to
+   * @param {string} guildId The guild id that we're trying to attempt to connect to
    */
   _attemptConnection(guildId) {
     const server = this.voiceServers.get(guildId)
@@ -189,7 +214,7 @@ class GorilinkManager extends EventEmitter {
 
   /**
    * Creates a instance of {@link GorilinkPlayer}
-   * @param {Object} data Guild data
+   * @param {object} data Guild data
    */
   spawnPlayer(data) {
     const guild = data.guild.id || data.guild
@@ -210,11 +235,11 @@ class GorilinkManager extends EventEmitter {
 
   /**
    * Fetch tracks based on query and a source
-   * @param {String} query Query string you want to search
-   * @param {String} source Media source
-   * @returns {Promise}
+   * @param {string} query Query string you want to search
+   * @param {string} source Media source
+   * @returns {Promise<SearchResponse>}
    */
-  async fetchTracks(query, source) {
+  async fetchTracks (query, source) {
     const node = this.idealNodes[0]
 
     if (!/^https?:\/\//.test(query)) {
@@ -222,24 +247,27 @@ class GorilinkManager extends EventEmitter {
     }
 
     const params = new URLSearchParams({ identifier: query })
+    const result = await this.request(node, 'loadtracks', params)
 
-    return await fetch(`http://${node.host}:${node.port}/loadtracks?${params}`, {
+    return new SearchResponse(result)
+  }
+
+  /**
+   * Send an request to lavalink endpoints
+   * @param {GorilinkNode} node The node to send the request
+   * @param {string} endpoint Request's endpoint
+   * @param {string} params Parameters of the request
+   * @returns {object}
+   */
+  request (node, endpoint, params) {
+    return fetch(`http://${node.host}:${node.port}/${endpoint}?${params}`, {
       headers: {
         Authorization: node.password
       }
     }).then(res => res.json())
-      .catch(error => { throw new Error('Fail to fetch tracks', error) })
-  }
-
-  /**
-   * Send to discord WebSocket packets
-   * @param {RawPacket} data Discord packet data
-   */
-  sendWS(data) {
-    const guild = this.client.guilds.get(data.d.guild_id)
-    if (!guild) return
-
-    return guild.shard.ws.send(JSON.stringify(data))
+      .catch(error => {
+        throw new Error('Fail to fetch tracks' + error)
+      })
   }
 }
 

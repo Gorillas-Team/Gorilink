@@ -296,12 +296,14 @@ class GorilinkPlayer extends EventEmitter {
 
   /**
    * Send packets to Lavalink Node
+   * You should only use operations if your lavalink supports filters
    * @param {String} op Operation string
    * @param {Object} data Packet data
+   * @param {Object} [operations] Filtering operations
    */
-  send(op, data) {
+  send(op, data, operations = {}) {
     if (!this.node.connected) throw new Error('No avaliable websocket connection for this node.')
-    return this.node.send({ ...data, op, guildId: this.guild })
+    return this.node.send({ ...data, op, guildId: this.guild, operations })
   }
 }
 

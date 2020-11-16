@@ -2295,7 +2295,7 @@
       </svg>
     </a>
     <h4 class="name" id="send">
-      <span class="type-signature"></span>send<span class="signature">(op, data)</span><span class="type-signature"></span>
+      <span class="type-signature"></span>send<span class="signature">(op, data, operations<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -2304,7 +2304,8 @@
 
 
   <div class="description">
-    <p>Send packets to Lavalink Node</p>
+    <p>Send packets to Lavalink Node
+You should only use operations if your lavalink supports filters</p>
   </div>
 
 
@@ -2325,6 +2326,8 @@
 
       <th>Type</th>
 
+      
+        <th>Attributes</th>
       
 
       
@@ -2353,6 +2356,14 @@
           
         </td>
 
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
         
 
         
@@ -2383,11 +2394,58 @@
         </td>
 
         
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
 
         
 
         <td class="description last">
           <p>Packet data</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>operations</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      Object
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          <p>Filtering operations</p>
           
         </td>
       </tr>
@@ -2431,7 +2489,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="GorilinkPlayer.js.html">GorilinkPlayer.js</a>, <a href="GorilinkPlayer.js.html#line302">line 302</a>
+          <a href="GorilinkPlayer.js.html">GorilinkPlayer.js</a>, <a href="GorilinkPlayer.js.html#line304">line 304</a>
         </li>
       </ul>
     </dd>

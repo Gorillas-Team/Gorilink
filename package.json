@@ -30,7 +30,7 @@
     "eris": "^0.14.0",
     "eslint": "^7.13.0",
     "jsdoc": "^3.6.4",
-    "jsdoc-template": "^1.2.0",
+    "jsdoc-template": "https://github.com/braintree/jsdoc-template",
     "nodemon": "^2.0.3",
     "typescript": "^4.0.5"
   },

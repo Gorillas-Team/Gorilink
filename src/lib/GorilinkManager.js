@@ -207,7 +207,7 @@ class GorilinkManager extends EventEmitter {
       .filter(node => node.connected)
       .sort((a, b) => {
         const aLoad = a.stats.cpu ? a.stats.cpu.systemLoad / a.stats.cpu.cores * 100 : 0
-        const bLoad = b.stats.cpu ? b.stats.cpu.systemLoad / b.stats.cpu.core * 100 : 0
+        const bLoad = b.stats.cpu ? b.stats.cpu.systemLoad / b.stats.cpu.cores * 100 : 0
         return aLoad - bLoad
       })
   }

@@ -37,7 +37,9 @@ declare module 'gorilink' {
 
     public leave(guild: string): GorilinkPlayer
 
-    public idealNodes(): GorilinkNode
+    public packetUpdate(packet: any): void
+
+    public idealNodes: GorilinkNode[]
 
     public fetchTracks(query: string, source?: string): SearchResponse
 

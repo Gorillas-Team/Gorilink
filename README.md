@@ -29,7 +29,7 @@ yarn add gorilink
 ```
 
 # About
-To use you need a configured [Lavalink](https://github.com/Frederikam/Lavalink) instance.
+To use you need a configured [Lavalink](https://github.com/freyacodes/Lavalink) instance.
 
 - Performant
 - 100% Compatible with Lavalink
